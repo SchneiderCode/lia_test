@@ -1,185 +1,211 @@
-<!--
-author:   CURC
+# Research Computing New User Training
 
-email:    your@mail.org
 
-version:  0.0.1
+Welcome to the Research Computing New User Training. This course covers the ins and outs of High Performance Computing (HPC) with CURC.
 
-language: en
+**Course Overview**
 
-narrator: US English Female
+In this training, you will learn about the resources available to you and how they support your research. These resources are organized into three broad categories:
 
-comment:  Try to write a short comment about
-          your course, multiline is also okay.
+1.  **HPC Clusters:** Computational hardware for supporting a variety of research workflows.
+2.  **Data Storage:** For backing-up research data and/or storing large datasets that are fed into computational workflows.
+3.  **Cloud Support:** Assistance with creating and sharing cloud resources (e.g., Azure, AWS, GCP).
 
-link:     https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css
+> **Note:** Multiple questions are embedded in this training to evaluate your understanding and help you avoid common pitfalls.
 
-script:   https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js
+---
 
-translation: Deutsch  translations/German.md
+## User Demographics
 
-translation: Français translations/French.md
--->
+Research Computing supports a number of partner institutions.
 
-# Course Main Title
+**Which institution do you belong to?**
 
-This is your **course** initialization stub.
+[(1)] University of Colorado Boulder
+[(2)] Colorado State University
+[(3)] Anschutz Medical Campus
+[(4)] RMACC Institution
+[(0)] Other
 
-Please see the [Docs](https://liascript.github.io/course/?https://raw.githubusercontent.com/liaScript/docs/master/README.md)
-to find out what is possible in [LiaScript](https://liascript.github.io).
+---
 
-If you want to use instant help in your Atom IDE, please type **lia** to see all available shortcuts.
+## HPC Clusters - Alpine & Blanca
 
-## Markdown
 
-You can use common [Markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) syntax to create your course, such as:
+**What is an HPC cluster?**
 
-1. Lists
-2. ordered or
+An HPC (High-Performance Computing) cluster is a group of individual computers (called "nodes") linked together by a very fast network. This design allows them to work together as a single, unified system.
 
-   * unordered
-   * ones ...
+* **The Analogy:** If a workstation is one person solving a puzzle, an HPC cluster is a huge team of hundreds of people working on different sections of the puzzle at the same time.
+* **The Benefit:** This "parallel" approach allows for complex simulations, analyzing enormous datasets, or training AI models in hours/days rather than months/years.
 
+**CURC Supported Clusters**
 
-| Header 1   | Header 2   |
-| :--------- | :--------- |
-| Item 1     | Item 2     |
+| Cluster | Description |
+| :--- | :--- |
+| **Alpine** | The third-generation HPC cluster composed of hardware from CU Boulder, CSU, and Anschutz. It offers hundreds of compute nodes and is available to all RC users. |
+| **Blanca** | A shared "condo" cluster consisting of nodes owned by individual research groups. Partners get priority access on their nodes, but can run jobs on other idle nodes. |
 
+### Knowledge Check
 
-Images:
+Which of the following research tasks are suitable for an HPC cluster, like Alpine or Blanca?
 
-![images](https://farm2.static.flickr.com/1618/26701766821_7bea494826.jpg)
+[[X]] Training a deep learning neural network model using a large dataset (Gigabytes to Terabytes) 
+[[ ]] Creating a spreadsheet to calculate the average weight and height of 30 penguins 
+[[X]] Running a computational fluid dynamics (CFD) simulation of airflow over an airplane's wing 
+[[ ]] Hosting an interactive website for visualizing historical weather data 
 
+---
 
-### Extensions
+## Alpine Hardware - Compute Nodes
 
-     --{{0}}--
-But you can also include other features such as spoken text.
+A "compute node" is hardware dedicated to running computational workflows. Alpine offers three main types:
 
-      --{{1}}--
-Insert any kind of audio file:
+1.  **CPU Nodes:** 
 
-       {{1}}
-?[audio](https://bigsoundbank.com/UPLOAD/mp3/1068.mp3)
+    * Primary node type for most users. 
+    * Configured for a wide variety of workflows (small jobs to multi-node coordination). 
+    *  Specs: At least 256 GB RAM and typically 64 Cores per node.
 
+2.  **High-Memory Nodes:**
 
-     --{{2}}--
-Even videos or change the language completely.
+    * Specialized CPU nodes with massive memory (RAM).
+    * Specs: 1 or 2 Terabytes of memory (1 TB = 1,000 GB).
+    * Use Case: Legacy programs that struggle with batch processing or cannot parallelize across nodes.
 
-       {{2-3}}
-!?[video](https://www.youtube.com/watch?v=bICfKRyKTwE)
+3.  **GPU Nodes:**
 
+    * Include one or more Graphical Processing Units (GPUs).
+    * Use Case: Training Machine Learning models, matrix-heavy calculations, and GPU-accelerated software.
 
-      --{{3 Russian Female}}--
-Первоначально создан в 2004 году Джоном Грубером (англ. John Gruber) и Аароном
-Шварцем. Многие идеи языка были позаимствованы из существующих соглашений по
-разметке текста в электронных письмах...
+### Knowledge Check
 
+**Scenario:** A research team needs to run an intensive data analysis application that will need dozens of CPUs and enough memory to load a large dataset (~150 GB corpus of Latin Texts) into memory.
 
-    {{3}}
-Type "voice" to see a list of all available languages.
+Based on the info above, which compute node type is most appropriate?
 
+[(X)] CPU Nodes
+[( )] High-Memory Nodes
+[( )] GPU Nodes
+[( )] None - Not an appropriate HPC workflow
 
-### Styling
+---
 
-<!-- class = "animated rollIn" style = "animation-delay: 2s; color: purple" -->
-The whole text-block should appear in purple color and with a wobbling effect.
-Which is a **bad** example, please use it with caution ...
-~~ only this is red ;-) ~~ <!-- class = "animated infinite bounce" style = "color: red;" -->
+## Software Management
 
-## Charts
 
-Use ASCII-Art to draw diagrams:
+There are three primary methods for accessing software on Alpine and Blanca:
 
-                                    Multiline
-    1.9 |    DOTS
-        |                 ***
-      y |               *     *
-      - | r r r r r r r*r r r r*r r r r r r r
-      a |             *         *
-      x |            *           *
-      i | B B B B B * B B B B B B * B B B B B
-      s |         *                 *
-        | *  * *                       * *  *
-     -1 +------------------------------------
-        0              x-axis               1
+1.  **LMOD Modules:** 
 
-## Quizzes
+    * The primary method. Dynamically modifies the shell environment to access specific compilers and applications (e.g., MATLAB).
+    * You may never need to install a program if the module exists.
 
-### A Textquiz
+2.  **Anaconda Environments:**
 
-What did the **fish** say when he hit a **concrete wall**?
+    * Encouraged for Python or R users.
+    * Allows users to manage their own libraries and specific versions not available on the cluster.
 
-    [[dam]]
+3.  **Containers (Apptainer):**
 
-### Multiple Choice
+    * Used for workflows requiring complex dependencies or specific operating systems.
+    * Ensures projects run consistently over time and across different systems.
 
-Just add as many points as you wish:
+### Knowledge Check
 
-    [[X]] Only the **X** marks the correct point.
-    [[ ]] Empty ones are wrong.
-    [[X]] ...
+Which of the following installation commands is **NOT** valid on a shared system, like Alpine?
 
-### Single Choice
+[( )] `pip install <package>`
+[(X)] `sudo apt-get install <PACKAGE>`
+[( )] `conda install <package>`
+[( )] None of the above
 
-Just add as many points as you wish:
+---
 
-    [( )] ...
-    [(X)] <-- Only the **X** is allowed.
-    [( )] ...
+## Open OnDemand
 
-## Executable Code
+Open OnDemand is a browser-based web portal that serves as a single access point for CURC resources.
 
-A drawing example, for demonstrating that any JavaScript library can be used, also for drawing.
 
-```javascript
-// Initialize a Line chart in the container with the ID chart1
-new Chartist.Line('#chart1', {
-  labels: [1, 2, 3, 4],
-  series: [[100, 120, 180, 200]]
-});
+**Key Features:**
+* **File Browser:** Upload, download, and edit files.
+* **Interactive Apps:** Launch Jupyter Notebooks, RStudio, VS Code, and MATLAB in the browser.
+* **Job Composer:** Create and submit Slurm jobs via forms.
+* **Shell Access:** Open a terminal window directly in your browser.
 
-// Initialize a Line chart in the container with the ID chart2
-new Chartist.Bar('#chart2', {
-  labels: [1, 2, 3, 4],
-  series: [[5, 2, 8, 3]]
-});
-```
-<script>@input</script>
+### Knowledge Check
 
-<div class="ct-chart ct-golden-section" id="chart1"></div>
-<div class="ct-chart ct-golden-section" id="chart2"></div>
+**1. Can you use Open OnDemand to upload/download your research dataset?**
 
+[(X)] Yes
+[( )] No
 
-### Projects
+**2. Can you use Open OnDemand to launch and run your full research workflow from RStudio?**
 
-You can make your code executable and define projects:
+[(X)] Yes
+[( )] No
 
-``` js     -EvalScript.js
-let who = data.first_name + " " + data.last_name;
+**3. To open a terminal on CURC's clusters, you must setup a local application on your computer, like Putty or iTerm.**
 
-if(data.online) {
-  who + " is online"; }
-else {
-  who + " is NOT online"; }
-```
-``` json    +Data.json
-{
-  "first_name" :  "Sammy",
-  "last_name"  :  "Shark",
-  "online"     :  true
-}
-```
-<script>
-  // insert the JSON dataset into the local variable data
-  let data = @input(1);
+[( )] Yes
+[(X)] No
 
-  // eval the script that uses this dataset
-  eval(`@input(0)`);
-</script>
+[[?]] Open OnDemand provides "Shell Access" directly in the web browser, so local terminal apps are not strictly required.
 
-## More
+---
 
-Find out what you can even do more with quizzes:
+## Data Storage
 
-https://liascript.github.io/course/?https://raw.githubusercontent.com/liaScript/docs/master/README.md
+
+**Core Storage**
+All users receive space in three personal directories:
+
+| Directory | Size Limit | Purpose | Performance/Backup |
+| :--- | :--- | :--- | :--- |
+| **/home** | 2 GB | Source code, small compiled programs, job scripts. | Backed up. |
+| **/projects** | 250 GB | Software builds and smaller datasets. | Backed up. |
+| **/scratch** | 10 TB | **All compute jobs** should be run here. | High-performance, **NOT backed up**. Temporary storage only. |
+
+**PetaLibrary**
+Available for storage, archival, and sharing of research data. It incurs a yearly charge per TB.
+
+### Knowledge Check
+
+You have finished your computations and have important results you need to keep for 3 years. **Where should you NOT store them?**
+
+[( )] PetaLibrary
+[( )] /projects Directory
+[( )] Download to local storage
+[(X)] /scratch Directory
+
+---
+
+## User Policies
+
+To maintain a healthy system, you must adhere to the following policies:
+
+1.  **Login Nodes:** Do **NOT** run computational jobs on login nodes. Use `srun` or `sbatch` to run work on compute nodes.
+2.  **Acknowledgment:** You must acknowledge CURC in publications.
+3.  **Acceptable Use:** Resources may not be used for personal financial gain or commercial purposes.
+4.  **Acceptable Data:** Do not store US Government Classified data or Controlled Unclassified Information (CUI).
+
+### Knowledge Check
+
+Which of the following actions violate CURC User Policies?
+
+[[ ]] Editing your project's code in Open OnDemand's File Browser
+[[X]] Storing medical records for patients in study on Alzheimer treatments 
+[[X]] Running a simple python program from a Login Node 
+[[ ]] Submitting hundreds of compute jobs to the Alpine Cluster
+
+---
+
+## Conclusion
+
+**Congratulations!** You have completed the New CURC User Training.
+
+If you have specific questions about CURC resources, please fill out our [Online Help Form](https://colorado.service-now.com/req_portal?id=ucb_sc_rc_form).
+
+To learn more, consider:
+* Reading the [Online Documentation](https://curc.readthedocs.io/en/latest/).
+* Attending a [Workshop Training Session](https://curc.readthedocs.io/en/latest/getting_started/current-sem-trainings.html).
