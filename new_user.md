@@ -11,7 +11,7 @@ In this training, you will learn about the resources available to you and how th
 
 <div style="width:45%; margin: 15px 2.5%; float:left;">
 
-![A student is taking an online quiz to test their knowledge of HPC systems](https://github.com/SchneiderCode/lia_test/blob/a36a4a17f4c6edab7d825fde3602a252c7bf2998/img/RC_Quiz.png)<!-- style="border:solid black 1px; border-radius: 15px;" -->
+![A student is taking an online quiz to test their knowledge of HPC systems](https://raw.githubusercontent.com/SchneiderCode/lia_test/refs/heads/main/img/RC_Quiz.png)<!-- style="border:solid black 1px; border-radius: 15px;" -->
 
 </div>
 
