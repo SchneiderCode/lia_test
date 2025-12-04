@@ -122,8 +122,6 @@ A "compute node" is hardware dedicated to running computational workflows. Alpin
     * Include one or more Graphical Processing Units (GPUs).
     * Use Case: Training Machine Learning models, matrix-heavy calculations, and GPU-accelerated software.
 
-### Knowledge Check
-
 **Scenario:** A research team needs to run an intensive data analysis application that will need dozens of CPUs and enough memory to load a large dataset (~150 GB corpus of Latin Texts) into memory.
 
 Based on the info above, which compute node type is most appropriate?
@@ -155,8 +153,6 @@ There are three primary methods for accessing software on Alpine and Blanca:
     * Used for workflows requiring complex dependencies or specific operating systems.
     * Ensures projects run consistently over time and across different systems.
 
-### Knowledge Check
-
 Which of the following installation commands is **NOT** valid on a shared system, like Alpine?
 
 [( )] `pip install <package>`
@@ -176,8 +172,6 @@ Open OnDemand is a browser-based web portal that serves as a single access point
 * **Interactive Apps:** Launch Jupyter Notebooks, RStudio, VS Code, and MATLAB in the browser.
 * **Job Composer:** Create and submit Slurm jobs via forms.
 * **Shell Access:** Open a terminal window directly in your browser.
-
-### Knowledge Check
 
 **1. Can you use Open OnDemand to upload/download your research dataset?**
 
@@ -213,8 +207,6 @@ All users receive space in three personal directories:
 **PetaLibrary**
 Available for storage, archival, and sharing of research data. It incurs a yearly charge per TB.
 
-### Knowledge Check
-
 You have finished your computations and have important results you need to keep for 3 years. **Where should you NOT store them?**
 
 [( )] PetaLibrary
@@ -232,8 +224,6 @@ To maintain a healthy system, you must adhere to the following policies:
 2.  **Acknowledgment:** You must acknowledge CURC in publications.
 3.  **Acceptable Use:** Resources may not be used for personal financial gain or commercial purposes.
 4.  **Acceptable Data:** Do not store US Government Classified data or Controlled Unclassified Information (CUI).
-
-### Knowledge Check
 
 Which of the following actions violate CURC User Policies?
 
