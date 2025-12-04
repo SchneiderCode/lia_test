@@ -1,11 +1,3 @@
-<!-- 
-@@@ Note - need to convert this to a Macro
-data-text-solved="That's Correct!"
-data-text-failed="Not Quite!"
-
--->
-
-
 # Research Computing New User Training
 
 Welcome to the Research Computing New User Training! This course covers the ins and outs of High Performance Computing (HPC) with CURC. 
@@ -35,7 +27,9 @@ In this training, you will learn about the resources available to you and how th
 
 </div>
 
-> **Note:** Multiple questions are embedded in this training to evaluate your understanding and help you avoid common pitfalls.<!-- style="clear:both;" -->
+<div style="clear:both"></div>
+
+> **Note:** Multiple questions are embedded in this training to evaluate your understanding and help you avoid common pitfalls.
 
 ---
 
