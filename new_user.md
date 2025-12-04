@@ -19,7 +19,7 @@ In this training, you will learn about the resources available to you and how th
 
 <div style="width:45%; margin: 15px 2.5%; float:left;">
 
-![A student is taking an online quiz to test their knowledge of HPC systems](016658ed4df0660315deca8e3d5e7933520b10a8.png)<!-- style="border:solid black 1px; border-radius: 15px;" -->
+![A student is taking an online quiz to test their knowledge of HPC systems](img/RC_Quiz.png)<!-- style="border:solid black 1px; border-radius: 15px;" -->
 
 </div>
 
