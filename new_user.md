@@ -1,9 +1,14 @@
+<!-- 
+@@@ Note - need to convert this to a Macro
+data-text-solved="That's Correct!"
+data-text-failed="Not Quite!"
+
+-->
+
+
 # Research Computing New User Training
 
-
-Welcome to the Research Computing New User Training. This course covers the ins and outs of High Performance Computing (HPC) with CURC.
-
-**Course Overview**
+Welcome to the Research Computing New User Training! This course covers the ins and outs of High Performance Computing (HPC) with CURC. 
 
 In this training, you will learn about the resources available to you and how they support your research. These resources are organized into three broad categories:
 
@@ -11,21 +16,26 @@ In this training, you will learn about the resources available to you and how th
 2.  **Data Storage:** For backing-up research data and/or storing large datasets that are fed into computational workflows.
 3.  **Cloud Support:** Assistance with creating and sharing cloud resources (e.g., Azure, AWS, GCP).
 
-> **Note:** Multiple questions are embedded in this training to evaluate your understanding and help you avoid common pitfalls.
 
----
+<div style="width:45%; margin: 15px 2.5%; float:left;">
 
-## User Demographics
+![A student is taking an online quiz to test their knowledge of HPC systems](016658ed4df0660315deca8e3d5e7933520b10a8.png)<!-- style="border:solid black 1px; border-radius: 15px;" -->
 
-Research Computing supports a number of partner institutions.
+</div>
 
-**Which institution do you belong to?**
+<div style="width:40%; border: solid black 1px; padding:10px; border-radius: 15px; float:left; margin: 15px 2.5%;" >
+
+**Please select your partner institution: **
 
 [(1)] University of Colorado Boulder
 [(2)] Colorado State University
-[(3)] Anschutz Medical Campus
+[(3)] CU Anschutz
 [(4)] RMACC Institution
 [(0)] Other
+
+</div>
+
+> **Note:** Multiple questions are embedded in this training to evaluate your understanding and help you avoid common pitfalls.<!-- style="clear:both;" -->
 
 ---
 
@@ -46,7 +56,6 @@ An HPC (High-Performance Computing) cluster is a group of individual computers (
 | **Alpine** | The third-generation HPC cluster composed of hardware from CU Boulder, CSU, and Anschutz. It offers hundreds of compute nodes and is available to all RC users. |
 | **Blanca** | A shared "condo" cluster consisting of nodes owned by individual research groups. Partners get priority access on their nodes, but can run jobs on other idle nodes. |
 
-### Knowledge Check
 
 Which of the following research tasks are suitable for an HPC cluster, like Alpine or Blanca?
 
@@ -54,6 +63,47 @@ Which of the following research tasks are suitable for an HPC cluster, like Alpi
 [[ ]] Creating a spreadsheet to calculate the average weight and height of 30 penguins 
 [[X]] Running a computational fluid dynamics (CFD) simulation of airflow over an airplane's wing 
 [[ ]] Hosting an interactive website for visualizing historical weather data 
+<script>
+//Expected format for @input is a numeric array
+// [0,0,0,1] 
+let response = ""
+let check = 0
+
+//  Neutral Net
+if (@input[0] == "1") {
+  response += "<br> <b>Training a deep learning neural network model using a large dataset (Gigabytes to Terabytes) </b> <br>Correct! Training a deep learning neural network requires a massive amount of simultaneous computations and a lots of memory capacity to handle the model and dataset, making it a classic HPC workflow. <br>"
+  check+=1
+} 
+
+//Spreadsheet 
+if (@input[1]  == "1") {
+  response += "<br> <b> Creating a spreadsheet to calculate the average weight and height of 30 penguins</b> <br>Not Quite. This task is a simple, sequential calculation that requires minimal resources and is easily handled by a standard personal computer. It does not benefit from or require the parallel power of a cluster. <br>"
+} 
+
+
+// CFD Simulation
+if (@input[2] == "1") {
+  response += "<br> <b>Running a computational fluid dynamics (CFD) simulation of airflow over an airplane's wing </b> <br>Correct! Simulations often require coordinated, parallel computation across many CPU cores (and GPUs) in order to complete within a reasonable timeframe. <br>"
+  check+=1
+} 
+
+// Hosting a website
+if (@input[3] == "1") {
+  response += "<br> <b> Hosting an interactive website for visualizing historical weather data </b> <br>Not Quite. While visualizing large datasets can be a great HPC workflow, CURC does not support web servers. Research workflows that require always-on services (like web servers) need to be setup in the cloud or on a non-CURC cluster.  <br>"
+} 
+
+document.getElementById("hpc_question_responses").innerHTML = response
+
+if(check == 2){
+  send.lia("true")
+} else { send.lia("")}
+
+//Note - the wait line is required for lia to properly use the send option to the quiz
+
+"LIA: wait"
+</script>
+
+<div id="hpc_question_responses"></div>
 
 ---
 
