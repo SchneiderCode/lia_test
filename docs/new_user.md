@@ -8,8 +8,6 @@ In this training, you will learn about the resources available to you and how th
 2.  **Data Storage:** For backing-up research data and/or storing large datasets that are fed into computational workflows.
 3.  **Cloud Support:** Assistance with creating and sharing cloud resources (e.g., Azure, AWS, GCP).
 
-Test 3
-
 <div style="width:45%; margin: 15px 2.5%; float:left;">
 
 ![A student is taking an online quiz to test their knowledge of HPC systems](lia_test/img/RC_Quiz.png)<!-- style="border:solid black 1px; border-radius: 15px;" -->
@@ -25,7 +23,47 @@ Test 3
 [(3)] CU Anschutz
 [(4)] RMACC Institution
 [(0)] Other
+<script>
 
+  async function sendData() {
+      const url = 'https://script.google.com/macros/s/AKfycbwP4LGNJU7o439IZ-qP-gsPiMcmVgDXENW6X8w_bl2BSxUpw7R7Zjg_rOibLcJnrFrDaQ/exec';
+
+      const user_name = Math.random().toString(36).substring(2, 4);
+      // We inject the captured selection into your JSON
+      const payload = `{
+          "username" : "user_${user_name}",
+          "institution" : "ucb", 
+          "email" : "test@email.com", 
+          "score" : 0.4, 
+          "course" : "NEW_USER"
+      }`;
+
+      try {
+          const response = await fetch(url, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: payload,
+          });
+
+          // Note: With 'no-cors', we cannot read response.text(), but the request sends.
+          console.log("Request sent successfully to Google Sheets");
+          send.lia("true")
+          return "Submission Successful"; 
+      } catch (error) {
+          console.error("Error:", error);
+          alert(error)
+          send.lia("Update Failed", [], false)
+          return "Error sending data";
+      }
+  }
+  console.log("Sending Data")
+  // 3. Execute
+  sendData();
+"LIA: wait"
+</script>
 </div>
 
 <div style="clear:both"></div>
