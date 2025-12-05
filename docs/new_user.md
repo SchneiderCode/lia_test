@@ -8,6 +8,7 @@ In this training, you will learn about the resources available to you and how th
 2.  **Data Storage:** For backing-up research data and/or storing large datasets that are fed into computational workflows.
 3.  **Cloud Support:** Assistance with creating and sharing cloud resources (e.g., Azure, AWS, GCP).
 
+Extra text for test
 
 <div style="width:45%; margin: 15px 2.5%; float:left;">
 
