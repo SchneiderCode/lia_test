@@ -8,11 +8,11 @@ In this training, you will learn about the resources available to you and how th
 2.  **Data Storage:** For backing-up research data and/or storing large datasets that are fed into computational workflows.
 3.  **Cloud Support:** Assistance with creating and sharing cloud resources (e.g., Azure, AWS, GCP).
 
-Test 2
+Test 3
 
 <div style="width:45%; margin: 15px 2.5%; float:left;">
 
-![A student is taking an online quiz to test their knowledge of HPC systems](./img/RC_Quiz.png)<!-- style="border:solid black 1px; border-radius: 15px;" -->
+![A student is taking an online quiz to test their knowledge of HPC systems](lia_test/img/RC_Quiz.png)<!-- style="border:solid black 1px; border-radius: 15px;" -->
 
 </div>
 
