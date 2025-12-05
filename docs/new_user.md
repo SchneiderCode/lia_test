@@ -89,6 +89,13 @@ An HPC (High-Performance Computing) cluster is a group of individual computers (
 | **Alpine** | The third-generation HPC cluster composed of hardware from CU Boulder, CSU, and Anschutz. It offers hundreds of compute nodes and is available to all RC users. |
 | **Blanca** | A shared "condo" cluster consisting of nodes owned by individual research groups. Partners get priority access on their nodes, but can run jobs on other idle nodes. |
 
+<div style="width:45%; margin: 15px 2.5%; float:left;">
+
+![A cartoon graphic of an HPC Cluster's hardware](lia_test/img/HPC_Clusters.png)<!-- style="border:solid black 1px; border-radius: 15px;" -->
+
+</div>
+
+<div style="width:40%; border: solid black 1px; padding:10px; border-radius: 15px; float:left; margin: 15px 2.5%;" >
 
 Which of the following research tasks are suitable for an HPC cluster, like Alpine or Blanca?
 
@@ -104,25 +111,25 @@ let check = 0
 
 //  Neutral Net
 if (@input[0] == "1") {
-  response += "<br> <b>Training a deep learning neural network model using a large dataset (Gigabytes to Terabytes) </b> <br>Correct! Training a deep learning neural network requires a massive amount of simultaneous computations and a lots of memory capacity to handle the model and dataset, making it a classic HPC workflow. <br>"
+  response += "<b>Training a deep learning... </b> <br><br>Correct!</b> Training a deep learning neural network requires a massive amount of simultaneous computations and a lots of memory capacity to handle the model and dataset, making it a classic HPC workflow. <br>"
   check+=1
 } 
 
 //Spreadsheet 
 if (@input[1]  == "1") {
-  response += "<br> <b> Creating a spreadsheet to calculate the average weight and height of 30 penguins</b> <br>Not Quite. This task is a simple, sequential calculation that requires minimal resources and is easily handled by a standard personal computer. It does not benefit from or require the parallel power of a cluster. <br>"
+  response += "<b> Creating a spreadsheet...</b> <br><b>Not Quite.</b> This task is a simple, sequential calculation that requires minimal resources and is easily handled by a standard personal computer. It does not benefit from or require the parallel power of a cluster. <br>"
 } 
 
 
 // CFD Simulation
 if (@input[2] == "1") {
-  response += "<br> <b>Running a computational fluid dynamics (CFD) simulation of airflow over an airplane's wing </b> <br>Correct! Simulations often require coordinated, parallel computation across many CPU cores (and GPUs) in order to complete within a reasonable timeframe. <br>"
+  response += "<b> Running a computational fluid ...</b> <br><b>Correct!</b> Simulations often require coordinated, parallel computation across many CPU cores (and GPUs) in order to complete within a reasonable timeframe. <br>"
   check+=1
 } 
 
 // Hosting a website
 if (@input[3] == "1") {
-  response += "<br> <b> Hosting an interactive website for visualizing historical weather data </b> <br>Not Quite. While visualizing large datasets can be a great HPC workflow, CURC does not support web servers. Research workflows that require always-on services (like web servers) need to be setup in the cloud or on a non-CURC cluster.  <br>"
+  response += "<b> Hosting an interactive website... </b> <br> <b>Not Quite.</b> While visualizing large datasets can be a great HPC workflow, CURC does not support web servers. Research workflows that require always-on services (like web servers) need to be setup in the cloud or on a non-CURC cluster.  <br>"
 } 
 
 document.getElementById("hpc_question_responses").innerHTML = response
@@ -137,6 +144,10 @@ if(check == 2){
 </script>
 
 <div id="hpc_question_responses"></div>
+
+</div>
+
+<div style="clear:both"></div>
 
 ---
 
@@ -161,6 +172,14 @@ A "compute node" is hardware dedicated to running computational workflows. Alpin
     * Include one or more Graphical Processing Units (GPUs).
     * Use Case: Training Machine Learning models, matrix-heavy calculations, and GPU-accelerated software.
 
+<div style="width:45%; margin: 15px 2.5%; float:left;">
+
+![A cartoon graphic of an HPC Cluster's hardware](lia_test/img/Alpine.png)<!-- style="border:solid black 1px; border-radius: 15px;" -->
+
+</div>
+
+<div style="width:40%; border: solid black 1px; padding:10px; border-radius: 15px; float:left; margin: 15px 2.5%;" >
+
 **Scenario:** A research team needs to run an intensive data analysis application that will need dozens of CPUs and enough memory to load a large dataset (~150 GB corpus of Latin Texts) into memory.
 
 Based on the info above, which compute node type is most appropriate?
@@ -169,6 +188,52 @@ Based on the info above, which compute node type is most appropriate?
 [( )] High-Memory Nodes
 [( )] GPU Nodes
 [( )] None - Not an appropriate HPC workflow
+<script>
+//Expected format for @input is a numeric array
+// 0, 1, 2, 3 <- a single choice will return the entry id, not an array
+let response = ""
+let check = 0
+
+//  CPU Nodes
+if ("@input" == "0") {
+  response = "<br> <b> CPU Nodes </b> <br> Correct! While a 150 GB dataset is large for a local computer, it will fit just fine on a CPU node's memory. While a High-Memory Node might work, those nodes should only be used for jobs that require more memory than a CPU node can provide (>250GB). <br>"
+  check=1
+} 
+
+// High-Memory Nodes 
+if ("@input" == "1") {
+  response = "<br> <b> High-Memory Nodes </b> <br>Close! - But a CPU Node would be a better fit. While a 150 GB dataset is large for a local computer, it will fit just fine on a CPU node's memory. <br>"
+} 
+
+// GPU Node
+if ("@input" == "2") {
+  response = "<br> <b> GPU Nodes </b> <br>Not Quite -  A CPU Node would be a better fit. Since the workflow doesn't mention needing GPUs for data processing, it would be best to stick with a CPU node. <br>"
+} 
+
+// None
+if ("@input" == "3") {
+  response = "<br> <b> None - Not an appropriate HPC workflow </b> <br>Not Quite - As described, the researchers workflow would be a great fit for an HPC Cluster. While there may be additional requirements that might make Alpine unsuitable (e.g. needing to run jobs for longer than 7 days), the workflow itself is a great example of an HPC empowered workflow <br>"
+} 
+
+document.getElementById("node_question_responses").innerHTML = response
+
+//If all of the correct options have been selected, then send true so LIA will continue. Sending empty string (false) notifies lia that 
+// the submission isn't fully complete
+if(check == 1){
+  send.lia("true")
+} else { send.lia("")}
+
+//Note - the wait line is required for lia to properly use the send option to the quiz
+
+"LIA: wait"
+</script>
+
+<div id="node_question_responses"></div>
+
+</div>
+
+<div style="clear:both"></div>
+
 
 ---
 
