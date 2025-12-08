@@ -2,7 +2,7 @@
 
 data-solution-button="off" 
 
-script: lia_test/sendData.js
+script: https://raw.githubusercontent.com/SchneiderCode/lia_test/refs/heads/main/docs/sendData.js
 
 -->
 
