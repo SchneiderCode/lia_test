@@ -2,7 +2,7 @@
 
 data-solution-button="off" 
 
-script: sendData.js
+script: lia_test/sendData.js
 
 -->
 
