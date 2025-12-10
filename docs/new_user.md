@@ -1,11 +1,43 @@
-<!-- 
+<!--
 
-data-solution-button="off" 
+@onload
+window.sendData = async function sendData({url='https://script.google.com/macros/s/AKfycbwP4LGNJU7o439IZ-qP-gsPiMcmVgDXENW6X8w_bl2BSxUpw7R7Zjg_rOibLcJnrFrDaQ/exec', username, email, course, question}) {
+      //const url = 'https://script.google.com/macros/s/AKfycbwP4LGNJU7o439IZ-qP-gsPiMcmVgDXENW6X8w_bl2BSxUpw7R7Zjg_rOibLcJnrFrDaQ/exec';
 
-script: https://raw.githubusercontent.com/SchneiderCode/lia_test/refs/heads/main/docs/sendData.js
+      // We inject the captured selection into your JSON
+      const payload = `{
+          "username" : "${username}",
+          "email" : "${email}", 
+          "course" : "${course}",
+          "question" : "${question}"
+      }`;
 
+      try {
+          const response = await fetch(url, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: payload,
+          });
+
+          // Note: With 'no-cors', we cannot read response.text(), but the request sends.
+          console.log("Request sent successfully to Google Sheets");
+          send.lia("true")
+          return "Submission Successful"; 
+      } catch (error) {
+          console.error("Error:", error);
+          alert(error)
+          send.lia("Update Failed", [], false)
+          return "Error sending data";
+      }
+  }
+@end
+
+
+persistent: true
 -->
-
 
 # Research Computing New User Training
 
@@ -25,27 +57,70 @@ In this training, you will learn about the resources available to you and how th
 
 <div style="width:40%; border: solid black 1px; padding:10px; border-radius: 15px; float:left; margin: 15px 2.5%;" >
 
-**Please select your partner institution: **
+**Please enter your Research Computing Account information: **
 
-[(1)] University of Colorado Boulder
-[(2)] Colorado State University
-[(3)] CU Anschutz
-[(4)] RMACC Institution
-[(0)] Other
-<script>
-//Primary / Initial quesiton - Ask for CURC Username 
-// Institutional Email 
-// Institution not needed 
-// Have a prior question - do you have a CURC account. 
-  
-  // 3. Execute  sendData(url, username, email,course,question)
-  sendData(url='https://script.google.com/macros/s/AKfycbwP4LGNJU7o439IZ-qP-gsPiMcmVgDXENW6X8w_bl2BSxUpw7R7Zjg_rOibLcJnrFrDaQ/exec', 
-           username="bob",
-           email="bob@email.com",
-           course="NEW_USER",
-           question="START");
-"LIA: wait"
+Do you have an existing RC account? 
+
+<script input="radio" value="Select Yes or No" options="YES|NO">
+  //If yes, reveal the username option
+  if("@input" === "YES"){
+    document.getElementById("username").hidden = false;
+    "YES"
+  }
+  else if ("@input" === "NO"){
+    document.getElementById("username").hidden = true;
+    "NO"
+  }
+  else{
+    "Select Yes or No"
+  }
+ 
 </script>
+
+<div id="username" hidden>
+
+Research Computing Username: 
+
+<script input="text" placeholder="buff1234" output="user_name" >
+  let user_name = "@input"
+  if(user_name){
+    user_name
+  }
+  else{
+    "Enter Username"
+  }
+
+</script>
+</div>
+
+Institutional Email Address: 
+
+<script input="email" placeholder="e.g. Ralphie@colorado.edu" output="user_email">
+  let user_email = "@input"
+
+  if(user_email){
+   user_email
+  }
+  else{
+    "Enter Institutional Email"
+  }
+
+</script>
+
+<br>
+<div style="margin: 0 auto" >
+<script input="submit" default="Waiting for Data" style="display:block; text-align:center;">
+  //TODO - Add validation to ensure they are using a gmail / .com email (needs to be edu or .gov?)
+  //Before submitting verify they have the correct values. 
+  if( "@input(`user_email`)" !== "\@input(`user_email`)"){
+    if( "@input(`user_name`)" !== "\@input(`user_name`)"){
+      sendData({username: "@input(`user_name`)", email: "@input(`user_email`)", course:"NEW_USER", question:"START"})
+      "Information Sent"
+    }
+  }
+</script>
+</div> 
+
 </div>
 
 <div style="clear:both"></div>
@@ -515,7 +590,7 @@ if(check == 2){
 
 ## Conclusion
 
-**Congratulations!You have completed the New CURC User Training!**
+**Congratulations! You have completed the New CURC User Training!**
 
 If you have specific questions about CURC resources, please fill out our [Online Help Form](https://colorado.service-now.com/req_portal?id=ucb_sc_rc_form).
 
