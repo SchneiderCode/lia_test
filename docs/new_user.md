@@ -142,7 +142,7 @@ Institutional email address:
 
 <div style="clear:both"></div>
 
-> **Note:** Multiple questions are embedded in this training to evaluate your understanding and help you avoid common pitfalls.
+> **Note:** Multiple questions are embedded in this training. It is ok if you don't know the answer to every question! Many of the questions are designed to test for common misconceptions and help you avoid common pitfalls for new users. 
 
 
 ---
@@ -365,12 +365,15 @@ To access CURC's HPC resources, like Alpine and Blanca, you will need to follow 
 
 3. Submit a job or transfer data
 
+<br>
 
 ![A cartoon graphic showing how to access CURC systems](lia_test/img/System_Access.png)<!-- style="border:solid black 1px; border-radius: 15px; width:75%; margin: 0 auto; display:block;" -->
 
 ### Requesting an RC Account 
 
 In order to access CURC's High Performance Computing (HPC) systems (Alpine, Blanca), Open OnDemand, and storage solutions, you must have an active CURC account. CURC serves multiple institutions, including CU Boulder, AMC, CSU, and RMACC members. Since account creation methods vary by affiliation, please review our [documentation page](https://curc.readthedocs.io/en/latest/getting_started/logging-in.html#getting-a-curc-account) to find the specific instructions for your institution.
+
+<br> 
 
 <div style="display: flex; align-items:center; padding:1em; border-top: dashed 1px; border-bottom: dashed 1px; " >
 
@@ -380,12 +383,13 @@ In order to access CURC's High Performance Computing (HPC) systems (Alpine, Blan
 
 </div>
 
-
 ### Logging In 
 
 Similar to obtaining an account, the process of logging in to CURC resources can vary based on the institution you are affiliated with. You can find institution-specific details for accessing the login nodes below and in our [online documentation](https://curc.readthedocs.io/en/latest/getting_started/logging-in.html#getting-access-to-curc-resources). 
 
 **Important note:** Only certain institutions are able to access the login nodes via `ssh`. `ssh` access is currently limited to users affiliated with CU Boulder, Colorado State University, and CU Anschutz.
+
+<br> 
 
 <div style="display: flex; align-items:center; padding:1em; border-top: dashed 1px; border-bottom: dashed 1px; " >
 
@@ -394,41 +398,6 @@ Similar to obtaining an account, the process of logging in to CURC resources can
 <p style="margin-bottom:0;" >Learn more about [logging in](https://curc.readthedocs.io/en/latest/getting_started/logging-in.html#getting-access-to-curc-resources) in our online documentation. </p>
 
 </div>
-
-#### ✏ Knowledge Check
-
-<div style="width:45%; margin: 15px 2.5%; float:left;">
-
-![A cartoon graphic of a user interacting with the system via ssh](lia_test/img/SSH_Login.png)<!-- style="border:solid black 1px; border-radius: 15px;" -->
-
-</div>
-
-<div style="width:40%; border: solid black 1px; padding:10px; border-radius: 15px; float:left; margin: 15px 2.5%;" >
-
-In order to access command-line operations or edit your files on CURC's clusters, you must setup a local terminal application on your computer, like Putty or iTerm.
-
-<!-- 
-data-solution-button="off" 
-data-text-solved="Correct! <br> Open OnDemand provides an interactive shell (Alpine Shell) which can be used instead of local terminal applications. This is a great way to access the system's Linux terminal without the hassle of setting up Putty or other terminal applications."
-data-text-failed="Not Quite! <br>Open OnDemand's Alpine Shell provides all RC users a web-based terminal for running Linux commands, editing files, other command-line operations. "
--->
-[( )] Yes
-[(X)] No
-<script>
-
-if ("@input" == "1") {
-  let currentDate = new Date();
-  sendData({username: user_name, email: user_email, course:"NEW_USER", question:"ONDEMAND_3", value: currentDate.toLocaleString()})
-  send.lia("true")
-} else { send.lia("")}
-
-  "LIA: wait"
-</script>
-
-</div>
-
-<div style="clear:both"></div>
-
 
 ---
 
@@ -459,12 +428,12 @@ Open OnDemand is a browser-based web portal that serves as a single access point
 
 <div style="width:40%; border: solid black 1px; padding:10px; border-radius: 15px; float:left; margin: 15px 2.5%;" >
 
-**1. Can you use Open OnDemand to upload/download your large research dataset?**
+**1. In order to access command-line operations or edit your files on CURC's clusters, you must setup a local terminal application on your computer, like Putty or iTerm.**
 
 <!-- 
 data-solution-button="off" 
-data-text-solved="Correct! <br> Open OnDemand is only intended for light data operations - like working with text files. You can learn more about how data transfers in our online documentation. <br> <br> Data Transfers: https://curc.readthedocs.io/en/latest/compute/data-transfer.html "
-data-text-failed="Not Quite! <br> While Open OnDemand provides a file browser, it is only intended for light data operations - like working with text files. If you need to upload or download a large dataset, you'll need to use one of our data transfer tools (like Globus). <br> <br> <br> Data Transfers:  https://curc.readthedocs.io/en/latest/compute/data-transfer.html"
+data-text-solved="Correct! <br> Open OnDemand provides an interactive shell (Alpine Shell) which can be used instead of local terminal applications. This is a great way to access the system's Linux terminal without the hassle of setting up Putty or other terminal applications."
+data-text-failed="Not Quite! <br>Open OnDemand's Alpine Shell provides all RC users a web-based terminal for running Linux commands, editing files, other command-line operations. "
 -->
 [( )] Yes
 [(X)] No
@@ -479,15 +448,16 @@ if ("@input" == "1") {
   "LIA: wait"
 </script>
 
-**2. Can you use Open OnDemand to launch and run your full research workflow from RStudio?**
+
+**2. Can you use Open OnDemand to upload/download your large research dataset?**
 
 <!-- 
 data-solution-button="off" 
-data-text-solved="Correct! <br> While you can use Open OnDemand to launch an interactive session with RStudio, this is really best for testing and developing a workflow. A finalized workflow should be submitted to the system as a batch job. <br> <br> Batch Jobs: https://curc.readthedocs.io/en/latest/running-jobs/batch-jobs.html"
-data-text-failed="Not Quite! <br> This is somewhat of a trick question. Yes, you can use RStudio within Open OnDemand but it's really intended to help support DEVELOPING your workflow. Interactive apps (like RStudio and VS Code) are not ideal for running finalized workflows. <br> Once a research workflow has been well tested, it should be submitted to the system as a batch job. <br> <br> Batch Jobs:  https://curc.readthedocs.io/en/latest/running-jobs/batch-jobs.html"
+data-text-solved="Correct! <br> Open OnDemand is only intended for light data operations - like working with text files. You can learn more about how data transfers in our online documentation. <br> <br> Data Transfers: https://curc.readthedocs.io/en/latest/compute/data-transfer.html "
+data-text-failed="Not Quite! <br> While Open OnDemand provides a file browser, it is only intended for light data operations - like working with text files. If you need to upload or download a large dataset, you'll need to use one of our data transfer tools (like Globus). <br> <br> <br> Data Transfers:  https://curc.readthedocs.io/en/latest/compute/data-transfer.html"
 -->
-[( )] True
-[(X)] False
+[( )] Yes
+[(X)] No
 <script>
 
 if ("@input" == "1") {
@@ -498,6 +468,8 @@ if ("@input" == "1") {
 
   "LIA: wait"
 </script>
+
+
 
 </div>
 
@@ -606,6 +578,41 @@ sleep 30
 echo "== End of Job =="
 ```
 
+--- 
+
+### ✏ Knowledge Check
+
+<div style="width:45%; margin: 15px 2.5%; float:left;">
+
+![A cartoon graphic showing a technican loading blocks labeled with different software modules onto a stack labeled LMOD](lia_test/img/Software_Stack.png)<!-- style="border:solid black 1px; border-radius: 15px;" -->
+
+</div>
+
+<div style="width:40%; border: solid black 1px; padding:10px; border-radius: 15px; float:left; margin: 15px 2.5%;" >
+
+**Because Open OnDemand provides a user-friendly interface, it is the recommended method for executing high-performance, long-duration research workflows. **
+
+<!-- 
+data-solution-button="off" 
+data-text-solved="Correct! <br> While you can use Open OnDemand to launch an interactive session (e.g. VS Code, RStudio, Matlab), this is really best for testing and developing a workflow. A finalized workflow should be submitted to the system as a batch job. <br> <br> Batch Jobs: https://curc.readthedocs.io/en/latest/running-jobs/batch-jobs.html"
+data-text-failed="Not Quite! <br> This is somewhat of a trick question. While you can use Open OnDemand for most research tasks, it's really intended to help support DEVELOPING your workflow. Interactive apps (like RStudio and VS Code) are not ideal for running finalized workflows. <br> Once a research workflow has been well tested, it should be submitted to the system as a batch job (which is discussed in the next section). <br> <br> Batch Jobs:  https://curc.readthedocs.io/en/latest/running-jobs/batch-jobs.html"
+-->
+[( )] True
+[(X)] False
+<script>
+
+if ("@input" == "1") {
+  let currentDate = new Date();
+  sendData({username: user_name, email: user_email, course:"NEW_USER", question:"ONDEMAND_3", value: currentDate.toLocaleString()})
+  send.lia("true")
+} else { send.lia("")}
+
+  "LIA: wait"
+</script>
+
+</div>
+
+<div style="clear:both"></div>
 
 ## Software Management
 
@@ -702,20 +709,23 @@ CURC provides two options for storing your data on the system - Core Storage and
 
 All users are provisioned space in three personal directories (that are accessible from both Alpine and Blanca):
 
-* **/home**
- Size: 2 GB
- Purpose: Saving small configuration files and personal files (e.g. ssh keys)
- Snapshots: Yes, data is saved/backed-up at regular intervals 
+**/home**
 
-* **/projects** 
- Size: 250 GB 
- Purpose: Source code, jobs scripts, larger files, software libraries, and compiled programs
- Snapshots: Yes, data is saved/backed-up at regular intervals
+* Size: 2 GB
+* Purpose: Saving small configuration files and personal files (e.g. ssh keys)
+* Snapshots: Yes, data is saved/backed-up at regular intervals 
 
-* **/scratch** 
- Size: 10 TB 
- Purpose: Designed as performant I/O storage and where your data for compute jobs (both input and output) should be stored.
- Snapshots: **NONE**. Scratch is temporary storage. All files are deleted after 90 days and we cannot restore files once they are deleted. 
+**/projects** 
+
+* Size: 250 GB 
+* Purpose: Source code, jobs scripts, larger files, software libraries, and compiled programs
+* Snapshots: Yes, data is saved/backed-up at regular intervals
+
+**/scratch** 
+
+* Size: 10 TB 
+* Purpose: Designed as performant I/O storage and where your data for compute jobs (both input and output) should be stored.
+* Snapshots: **NONE**. Scratch is temporary storage. All files are deleted after 90 days and we cannot restore files once they are deleted. 
 
 > If you need more storage space than what is provided by Core Storage, than you will want to consider purchasing a PetaLibrary allocation.
 
@@ -755,7 +765,7 @@ Research Computing supports several methods of file transfer. File transfers fro
 
 Data transfers using SSH protocols can be done through the CURC data transfer nodes (DTN). Transfers via the DTNs support all types of transfers, including large and/or frequent file transfers and automated (passwordless) transfers. 
 
-> We generally recommend you use Globus for handling large file transfers to the system. But if you aren't sure how to handle a tricky data transfer, feel free to reach out to User Support through our [support request form](https://colorado.service-now.com/req_portal?id=ucb_sc_rc_form). We are always happy to help!s
+> We generally recommend using Globus for handling large file transfers to the system. But if you aren't sure how to handle a tricky data transfer, feel free to reach out to User Support through our [support request form](https://colorado.service-now.com/req_portal?id=ucb_sc_rc_form). We are always happy to help!s
 
 <div style="display: flex; align-items:center; padding:1em; border-top: dashed 1px; border-bottom: dashed 1px; " >
 
@@ -835,7 +845,7 @@ if(check == 1){
 
 ---
 
-## System Policies
+## User Policies
 
 To maintain a healthy system, you must adhere to the following policies:
 
@@ -844,13 +854,11 @@ To maintain a healthy system, you must adhere to the following policies:
 3.  **Acceptable Use:** Resources may not be used for personal financial gain or commercial purposes.
 4.  **Acceptable Data:** Do not store US Government Classified data or Controlled Unclassified Information (CUI).
 
-https://curc.readthedocs.io/en/latest/additional-resources/policies.html
-
 <div style="display: flex; align-items:center; padding:1em; border-top: dashed 1px; border-bottom: dashed 1px; " >
 
 <img alt="Read the Docs Logo" src="lia_test/img/RTD_Logo_Dark.svg" style="width:150px; margin-right:15px; background-color:white; border-radius:5px; padding:5px;"> 
 
-<p style="margin-bottom:0;" >Learn more about [Alpine](https://curc.readthedocs.io/en/latest/clusters/alpine/index.html) and [Blanca](https://www.colorado.edu/rc/resources/blanca) in our online documentation. </p>
+<p style="margin-bottom:0;" >You can find a full list of and additional details on our [User Policies](https://curc.readthedocs.io/en/latest/additional-resources/policies.html) in our online documentation. </p>
 
 </div>
 
