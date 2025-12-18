@@ -1,38 +1,48 @@
 <!--
 
 @onload
-window.sendData = async function sendData({url='https://script.google.com/macros/s/AKfycbwP4LGNJU7o439IZ-qP-gsPiMcmVgDXENW6X8w_bl2BSxUpw7R7Zjg_rOibLcJnrFrDaQ/exec', username, email, course, question}) {
-      //const url = 'https://script.google.com/macros/s/AKfycbwP4LGNJU7o439IZ-qP-gsPiMcmVgDXENW6X8w_bl2BSxUpw7R7Zjg_rOibLcJnrFrDaQ/exec';
+window.sendData = async function sendData({url='https://script.google.com/macros/s/AKfycbwP4LGNJU7o439IZ-qP-gsPiMcmVgDXENW6X8w_bl2BSxUpw7R7Zjg_rOibLcJnrFrDaQ/exec', username, email, course, question, value}) {
 
-      // We inject the captured selection into your JSON
-      const payload = `{
-          "username" : "${username}",
-          "email" : "${email}", 
-          "course" : "${course}",
-          "question" : "${question}"
-      }`;
+  //Only transmit data if a valid email has been given
+  if(email.endsWith(".edu") || email.endsWith(".gov")){
+    // We inject the captured selection into your JSON
+    const payload = `{
+        "username" : "${username}",
+        "email" : "${email}", 
+        "course" : "${course}",
+        "question" : "${question}",
+        "value" : "${value}"
+    }`;
 
-      try {
-          const response = await fetch(url, {
-              method: 'POST',
-              mode: 'no-cors',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: payload,
-          });
-
-          // Note: With 'no-cors', we cannot read response.text(), but the request sends.
-          console.log("Request sent successfully to Google Sheets");
-          send.lia("true")
-          return "Submission Successful"; 
-      } catch (error) {
-          console.error("Error:", error);
-          alert(error)
-          send.lia("Update Failed", [], false)
-          return "Error sending data";
-      }
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: payload,
+        });
+        
+        // Note: With 'no-cors', we cannot read response.text(), but the request sends.
+        console.log("Request sent successfully to Google Sheets");
+        send.lia("true")
+        return "Submission Successful"; 
+    } catch (error) {
+        console.error("Error:", error);
+        alert(error)
+        send.lia("Update Failed", [], false)
+        return "Error sending data";
+    }
   }
+  else{
+    console.log("Invalid Email")
+  }
+}
+
+window.user_name="anon_" + Math.floor(Math.random() * 1000000);
+window.user_email=window.user_name
+
 @end
 
 
@@ -41,13 +51,7 @@ persistent: true
 
 # Research Computing New User Training
 
-Welcome to the Research Computing New User Training! This course covers the ins and outs of High Performance Computing (HPC) with CURC. 
-
-In this training, you will learn about the resources available to you and how they support your research. These resources are organized into three broad categories:
-
-1.  **HPC Clusters:** Computational hardware for supporting a variety of research workflows.
-2.  **Data Storage:** For backing-up research data and/or storing large datasets that are fed into computational workflows.
-3.  **Cloud Support:** Assistance with creating and sharing cloud resources (e.g., Azure, AWS, GCP).
+Welcome to the Research Computing New User Training! This course covers the ins and outs of CU Research Computing's (CURC) High Performance Computing (HPC) systems. 
 
 <div style="width:45%; margin: 15px 2.5%; float:left;">
 
@@ -57,7 +61,7 @@ In this training, you will learn about the resources available to you and how th
 
 <div style="width:40%; border: solid black 1px; padding:10px; border-radius: 15px; float:left; margin: 15px 2.5%;" >
 
-**Please enter your Research Computing Account information: **
+**Please enter your Research Computing account information: **
 
 Do you have an existing RC account? 
 
@@ -79,47 +83,60 @@ Do you have an existing RC account?
 
 <div id="username" hidden>
 
-Research Computing Username: 
+Research Computing username: 
 
-<script input="text" placeholder="buff1234" output="user_name" >
-  let user_name = "@input"
-  if(user_name){
-    user_name
+<script input="text" placeholder="buff1234" >
+  let user_name_temp = "@input"
+  if(user_name_temp){
+    user_name = user_name_temp
+    user_name_temp
   }
   else{
-    "Enter Username"
+    "Enter username"
   }
 
 </script>
 </div>
 
-Institutional Email Address: 
+Institutional email address: 
 
-<script input="email" placeholder="e.g. Ralphie@colorado.edu" output="user_email">
-  let user_email = "@input"
+<script input="email" placeholder="e.g. Ralphie@colorado.edu" >
+  let user_email_temp = "@input"
 
-  if(user_email){
-   user_email
+  if(user_email_temp){
+    if(user_email_temp.endsWith(".edu") || user_email_temp.endsWith(".gov")){
+      user_email = user_email_temp
+    }
+    else{
+      document.getElementById("email_warning").innerHTML="WARNING - Please enter an institutional email (.edu) or government email (.gov)"
+    }
+    user_email_temp
   }
   else{
-    "Enter Institutional Email"
+    "Enter institutional email"
   }
 
 </script>
+
+<div id="email_warning" style="color:red">
+
+</div>
 
 <br>
-<div style="margin: 0 auto" >
-<script input="submit" default="Waiting for Data" style="display:block; text-align:center;">
-  //TODO - Add validation to ensure they are using a gmail / .com email (needs to be edu or .gov?)
-  //Before submitting verify they have the correct values. 
-  if( "@input(`user_email`)" !== "\@input(`user_email`)"){
-    if( "@input(`user_name`)" !== "\@input(`user_name`)"){
-      sendData({username: "@input(`user_name`)", email: "@input(`user_email`)", course:"NEW_USER", question:"START"})
-      "Information Sent"
-    }
+
+
+
+<script input="submit" default="Submit" style="display:block; text-align:center;"  >
+  if(user_email.endsWith(".edu") || user_email.endsWith(".gov")){
+    let currentDate = new Date();
+    sendData({username: user_name, email: user_email, course:"NEW_USER", question:"START", value: currentDate.toLocaleString()})
+    "Information Saved"
+  }
+  else{
+    "Please enter a valid institutional email"
   }
 </script>
-</div> 
+
 
 </div>
 
@@ -127,26 +144,41 @@ Institutional Email Address:
 
 > **Note:** Multiple questions are embedded in this training to evaluate your understanding and help you avoid common pitfalls.
 
+
 ---
 
-## HPC Clusters - Alpine & Blanca
+## What is an HPC Cluster?
+
+An HPC cluster connects individual computers (called "nodes") via a high-speed network, allowing them to function as a single, unified supercomputer. This design enables you to tackle even the toughest research problems by breaking them up into smaller pieces (which can be solved in parallel) or processed at scale (high-throughput computing).
+
+* **Working in Parallel:** Like a team solving different sections of one giant puzzle simultaneously, the nodes work together (i.e. in parallel) on a single complex task. This accelerates heavy workloads, such as training AI models or running climate simulations, and significantly reduces processing time.
+
+* **Working at Scale:** Also known as "High-Throughput Computing," this approach assigns each node a separate, smaller puzzle to solve independently. While the speed of a single task remains the same, the cluster processes a massive volume of distinct jobs at once.
 
 
-**What is an HPC cluster?**
+![A cartoon graphic of an HPC Cluster's hardware](lia_test/img/HPC_Workflows.png)<!-- style="border:solid black 1px; border-radius: 15px; display:block; margin:15px auto;" -->
 
-An HPC (High-Performance Computing) cluster is a group of individual computers (called "nodes") linked together by a very fast network. This design allows them to work together as a single, unified system.
 
-* **The Analogy:** If a workstation is one person solving a puzzle, an HPC cluster is a huge team of hundreds of people working on different sections of the puzzle at the same time.
-* **The Benefit:** This "parallel" approach allows for complex simulations, analyzing enormous datasets, or training AI models in hours/days rather than months/years.
 
-**CURC Supported Clusters**
+---
 
-| Cluster | Description |
-| :--- | :--- |
-| **Alpine** | The third-generation HPC cluster composed of hardware from CU Boulder, CSU, and Anschutz. It offers hundreds of compute nodes and is available to all RC users. |
-| **Blanca** | A shared "condo" cluster consisting of nodes owned by individual research groups. Partners get priority access on their nodes, but can run jobs on other idle nodes. |
+### CURC Supported Clusters
 
-<div style="width:45%; margin: 15px 2.5%; float:left;">
+CURC currently supports two clusters -- Alpine and Blanca. 
+
+**Alpine** is the University of Colorado Boulder Research Computing’s third-generation high performance computing (HPC) cluster composed of hardware provided from University of Colorado Boulder, Colorado State University, and Anschutz Medical Campus. Alpine currently offers hundreds of compute nodes with thousands of CPU cores and dozens of GPUs. All Alpine nodes are available to all RC users. 
+
+**Blanca** is a shared “condo” compute cluster, which consists of nodes owned by individual research groups or departments. Condo partners get significantly prioritized access on nodes that they own and can run jobs on any nodes that are not currently in use by other partners. If you would like to purchase a Blanca node, please visit the Research Computing website for more details. 
+
+<div style="display: flex; align-items:center; padding:1em; border-top: dashed 1px; border-bottom: dashed 1px; " >
+
+<img alt="Read the Docs Logo" src="lia_test/img/RTD_Logo_Dark.svg" style="width:150px; margin-right:15px; background-color:white; border-radius:5px; padding:5px;"> 
+
+<p style="margin-bottom:0;" >Learn more about [Alpine](https://curc.readthedocs.io/en/latest/clusters/alpine/index.html) and [Blanca](https://www.colorado.edu/rc/resources/blanca) in our online documentation. </p>
+
+</div>
+
+<div style="width:45%; margin: 15px 2.5%; float:left; ">
 
 ![A cartoon graphic of an HPC Cluster's hardware](lia_test/img/HPC_Clusters.png)<!-- style="border:solid black 1px; border-radius: 15px;" -->
 
@@ -154,7 +186,7 @@ An HPC (High-Performance Computing) cluster is a group of individual computers (
 
 <div style="width:40%; border: solid black 1px; padding:10px; border-radius: 15px; float:left; margin: 15px 2.5%;" >
 
-Which of the following research tasks are suitable for an HPC cluster, like Alpine or Blanca?
+Which of the following research tasks are suitable for an HPC cluster, like Alpine or Blanca? (Select all that apply)
 
 <!-- data-solution-button="off" -->
 [[X]] Training a deep learning neural network model using a large dataset (Gigabytes to Terabytes) 
@@ -192,6 +224,8 @@ if (@input[3] == "1") {
 document.getElementById("hpc_question_responses").innerHTML = response
 
 if(check == 2){
+  let currentDate = new Date();
+  sendData({username: user_name, email: user_email, course:"NEW_USER", question:"HPC_CLUSTERS", value: currentDate.toLocaleString()})
   send.lia("true")
 } else { send.lia("")}
 
@@ -206,28 +240,38 @@ if(check == 2){
 
 <div style="clear:both"></div>
 
+
+
 ---
 
-## Alpine Hardware - Compute Nodes
+### Cluster Hardware
 
-A "compute node" is hardware dedicated to running computational workflows. Alpine offers three main types:
+CURC supports three types of nodes in its clusters: Login, Compute, and Data-Transfer.
 
-1.  **CPU Nodes:** 
+---
 
-    * Primary node type for most users. 
-    * Configured for a wide variety of workflows (small jobs to multi-node coordination). 
-    *  Specs: At least 256 GB RAM and typically 64 Cores per node.
+#### Login Nodes
 
-2.  **High-Memory Nodes:**
+This is your entry point to the system. When you SSH into login.rc.colorado.edu, you are on a login node.
 
-    * Specialized CPU nodes with massive memory (RAM).
-    * Specs: 1 or 2 Terabytes of memory (1 TB = 1,000 GB).
-    * Use Case: Legacy programs that struggle with batch processing or cannot parallelize across nodes.
+* **Use it for:** Lightweight tasks like editing files, writing job scripts, managing directories, and submitting jobs to the scheduler.
 
-3.  **GPU Nodes:**
+* **Do NOT use it for:** Running computational programs or compiling code. These nodes are shared by everyone, and running heavy tasks here slows down the system for all users!
 
-    * Include one or more Graphical Processing Units (GPUs).
-    * Use Case: Training Machine Learning models, matrix-heavy calculations, and GPU-accelerated software.
+---
+
+#### Compute Nodes 
+
+These are the powerful computers where your actual research and calculations take place.
+
+* **Use it for:** Running simulations, analyzing data, and performing heavy calculations.  
+* **Types Available:**
+
+  * *CPU Nodes:* Primary node for most users. Includes at least 256 GB of RAM and dozens of CPU cores per node.
+  * *High-Memory Nodes:* Specialized CPU Node that provides a large amount of RAM (1TB or 2 TB).
+  * *GPU Nodes:* Specialized nodes that contains one or more Graphical Processing Units (GPUs), which help support AI, Machine Learning, and GPU-accelerated software.
+
+* **How to access:** You generally do not log into these directly. Instead, you submit a "job" (using Slurm) from the login node, and the system assigns your work to a compute node automatically. You'll learn more in an upcoming section "Running Jobs on the Cluster". 
 
 <div style="width:45%; margin: 15px 2.5%; float:left;">
 
@@ -278,6 +322,8 @@ document.getElementById("node_question_responses").innerHTML = response
 //If all of the correct options have been selected, then send true so LIA will continue. Sending empty string (false) notifies lia that 
 // the submission isn't fully complete
 if(check == 1){
+  let currentDate = new Date();
+  sendData({username: user_name, email: user_email, course:"NEW_USER", question:"ALPINE_HARDWARE", value: currentDate.toLocaleString()})
   send.lia("true")
 } else { send.lia("")}
 
@@ -292,28 +338,251 @@ if(check == 1){
 
 <div style="clear:both"></div>
 
+---
+
+#### Data-Transfer Nodes 
+
+These are specialized nodes optimized for moving files in and out of the system.
+
+* **Use it for:** Uploading or downloading large datasets between your computer (or another institution) and CURC storage.
+
+* **How to access:** You connect to these via Globus, `sftp`, `scp`, or `ssh` on dtn.rc.colorado.edu. You will learn more about these data transfer techniques in an upcoming section "Storing Data on the Cluster". 
+
+ 
+---
+
+## Accessing the Cluster
+
+To access CURC's HPC resources, like Alpine and Blanca, you will need to follow these three steps: 
+
+1. Request a Research Computing account
+
+2. Log onto the system 
+
+3. Submit a job or transfer data
+
+
+![A cartoon graphic showing how to access CURC systems](lia_test/img/System_Access.png)<!-- style="border:solid black 1px; border-radius: 15px;" -->
+
+### Requesting an RC Account 
+
+In order to access CURC's High Performance Computing (HPC) systems (Alpine, Blanca), Open OnDemand, and storage solutions, you must have an active CURC account. CURC serves multiple institutions, including CU Boulder, AMC, CSU, and RMACC members. Since account creation methods vary by affiliation, please review our [documentation page](https://curc.readthedocs.io/en/latest/getting_started/logging-in.html#getting-a-curc-account) to find the specific instructions for your institution.
+
+<div style="display: flex; align-items:center; padding:1em; border-top: dashed 1px; border-bottom: dashed 1px; " >
+
+<img alt="Read the Docs Logo" src="lia_test/img/RTD_Logo_Dark.svg" style="width:150px; margin-right:15px; background-color:white; border-radius:5px; padding:5px;"> 
+
+<p style="margin-bottom:0;" >Learn more about [requesting an RC account](https://curc.readthedocs.io/en/latest/getting_started/logging-in.html#getting-a-curc-account) in our online documentation. </p>
+
+</div>
+
+
+### Logging In 
+
+Similar to obtaining an account, the process of logging in to CURC resources can vary based on the institution you are affiliated with. You can find institution-specific details for accessing the login nodes below and in our [online documentation](https://curc.readthedocs.io/en/latest/getting_started/logging-in.html#getting-access-to-curc-resources). 
+
+**Important note:** Only certain institutions are able to access the login nodes via `ssh`. `ssh` access is currently limited to users affiliated with CU Boulder, Colorado State University, and CU Anschutz.
+
+<div style="display: flex; align-items:center; padding:1em; border-top: dashed 1px; border-bottom: dashed 1px; " >
+
+<img alt="Read the Docs Logo" src="lia_test/img/RTD_Logo_Dark.svg" style="width:150px; margin-right:15px; background-color:white; border-radius:5px; padding:5px;"> 
+
+<p style="margin-bottom:0;" >Learn more about [logging in](https://curc.readthedocs.io/en/latest/getting_started/logging-in.html#getting-access-to-curc-resources) in our online documentation. </p>
+
+</div>
+
+<div style="width:45%; margin: 15px 2.5%; float:left;">
+
+![A cartoon graphic of a user interacting with the system via ssh](lia_test/img/SSH_Login.png)<!-- style="border:solid black 1px; border-radius: 15px;" -->
+
+</div>
+
+<div style="width:40%; border: solid black 1px; padding:10px; border-radius: 15px; float:left; margin: 15px 2.5%;" >
+
+In order to access command-line operations or edit your files on CURC's clusters, you must setup a local terminal application on your computer, like Putty or iTerm.
+
+<!-- 
+data-solution-button="off" 
+data-text-solved="Correct! <br> Open OnDemand provides an interactive shell (Alpine Shell) which can be used instead of local terminal applications. This is a great way to access the system's Linux terminal without the hassle of setting up Putty or other terminal applications."
+data-text-failed="Not Quite! <br>Open OnDemand's Alpine Shell provides all RC users a web-based terminal for running Linux commands, editing files, other command-line operations. "
+-->
+[( )] Yes
+[(X)] No
+<script>
+
+if ("@input" == "1") {
+  let currentDate = new Date();
+  sendData({username: user_name, email: user_email, course:"NEW_USER", question:"ONDEMAND_3", value: currentDate.toLocaleString()})
+  send.lia("true")
+} else { send.lia("")}
+
+  "LIA: wait"
+</script>
+
+</div>
+
+<div style="clear:both"></div>
+
 
 ---
 
+### Open OnDemand
+
+Open OnDemand is a browser-based web portal that serves as a single access point for CURC resources and includes the following key features:
+
+* **File Browser:** Upload, download, and edit files smaller than 1 GB.
+* **Interactive Apps:** Launch Jupyter Notebooks, RStudio, VS Code, Core Desktop, and MATLAB in your browser using HPC resources.
+* **Job Composer:** Submit and monitor jobs on the cluster.
+* **Shell Access:** Open a terminal window directly in your browser.
+
+<div style="display: flex; align-items:center; padding:1em; border-top: dashed 1px; border-bottom: dashed 1px; " >
+
+<img alt="Read the Docs Logo" src="lia_test/img/RTD_Logo_Dark.svg" style="width:150px; margin-right:15px; background-color:white; border-radius:5px; padding:5px;"> 
+
+<p style="margin-bottom:0;" >Learn more about [Open OnDemand](https://curc.readthedocs.io/en/latest/open_ondemand/index.html) in our online documentation. </p>
+
+</div>
+
+<div style="width:45%; margin: 15px 2.5%; float:left;">
+
+![A cartoon graphic of a user interacting with the Open OnDemand web portal](lia_test/img/Open_OnDemand.png)<!-- style="border:solid black 1px; border-radius: 15px;" -->
+
+</div>
+
+<div style="width:40%; border: solid black 1px; padding:10px; border-radius: 15px; float:left; margin: 15px 2.5%;" >
+
+**1. Can you use Open OnDemand to upload/download your large research dataset?**
+
+<!-- 
+data-solution-button="off" 
+data-text-solved="Correct! <br> Open OnDemand is only intended for light data operations - like working with text files. You can learn more about how data transfers in our online documentation. <br> <br> Data Transfers: https://curc.readthedocs.io/en/latest/compute/data-transfer.html "
+data-text-failed="Not Quite! <br> While Open OnDemand provides a file browser, it is only intended for light data operations - like working with text files. If you need to upload or download a large dataset, you'll need to use one of our data transfer tools (like Globus). <br> <br> <br> Data Transfers:  https://curc.readthedocs.io/en/latest/compute/data-transfer.html"
+-->
+[( )] Yes
+[(X)] No
+<script>
+
+if ("@input" == "1") {
+  let currentDate = new Date();
+  sendData({username: user_name, email: user_email, course:"NEW_USER", question:"ONDEMAND_1", value: currentDate.toLocaleString()})
+  send.lia("true")
+} else { send.lia("")}
+
+  "LIA: wait"
+</script>
+
+**2. Can you use Open OnDemand to launch and run your full research workflow from RStudio?**
+
+<!-- 
+data-solution-button="off" 
+data-text-solved="Correct! <br> While you can use Open OnDemand to launch an interactive session with RStudio, this is really best for testing and developing a workflow. A finalized workflow should be submitted to the system as a batch job. <br> <br> Batch Jobs: https://curc.readthedocs.io/en/latest/running-jobs/batch-jobs.html"
+data-text-failed="Not Quite! <br> This is somewhat of a trick question. Yes, you can use RStudio within Open OnDemand but it's really intended to help support DEVELOPING your workflow. Interactive apps (like RStudio and VS Code) are not ideal for running finalized workflows. <br> Once a research workflow has been well tested, it should be submitted to the system as a batch job. <br> <br> Batch Jobs:  https://curc.readthedocs.io/en/latest/running-jobs/batch-jobs.html"
+-->
+[( )] True
+[(X)] False
+<script>
+
+if ("@input" == "1") {
+  let currentDate = new Date();
+  sendData({username: user_name, email: user_email, course:"NEW_USER", question:"ONDEMAND_2", value: currentDate.toLocaleString()})
+  send.lia("true")
+} else { send.lia("")}
+
+  "LIA: wait"
+</script>
+
+</div>
+
+<div style="clear:both"></div>
+
+---
+
+## Running Jobs on the Cluster
+
+Because CURC's compute nodes are shared among many researchers, Research Computing manages system usage through jobs. Jobs are simply an allotment of resources that can be used to execute processes. Research Computing uses a program named the Simple Linux Utility for Resource Management, or Slurm, to create and manage jobs.
+
+In order to run a program on a cluster, you must request resources from Slurm to generate a job. Resources can be requested from a login node or a compile node. You must then provide commands to run your program on those requested resources. Where you provide your commands depends on whether you are running a batch job or an interactive job.
+
+When you run a batch job or an interactive job, it will be placed in a queue until resources are available.
+
+TODO - add diagram representing interactive vs batch. Highlight that open on demand is considered an interactive job. 
+
+### Interactive Jobs
+
+As the name would imply, an interactive job is a job that allows users to interact with requested resources in real-time. Users can run applications, execute scripts, or run other commands directly on a compute node. Interactive jobs should be used for:
+
+* Debugging applications or workflows
+* Any application that requires user input at runtime
+* Any application with a GUI (Graphical User Interface)
+
+You can request an interactive job by using the sinteractive command. Compute resources must be requested via the command line through the use of SLURM flags. An example of an sinteractive command can be found below. Additional details on modifying SLURM flags and requesting an interactive session can be found in our [online documentation](https://curc.readthedocs.io/en/latest/running-jobs/interactive-jobs.html). 
+
+Example sinteractive command: 
+
+```
+sinteractive --partition=amilan --time=00:10:00 --ntasks=1 --nodes=1 --qos=normal
+```
+
+### Batch Jobs
+
+The primary method of running applications on Research Computing resources is through a batch job. A batch job is a job that runs on a compute node with little or no interaction with the users. You should use batch jobs for:
+
+* Any computationally expensive application that could take hours or days to run
+* Any application that requires little or no user input
+* Applications that you do not need to monitor extensively
+
+Unlike running an application on your personal machine, you do not call the application you wish to run directly. Instead, you create a job script that includes a call to your application. Job scripts are simply a set of resource requests and commands. When a job script is run, all the commands in the job script are executed on a compute node.
+
+Once created, you can run your job script by passing it to the Slurm queue with the sbatch command followed by your job script name. You can learn more about batch scripts in our [online documentation](https://curc.readthedocs.io/en/latest/running-jobs/batch-jobs.html#batch-jobs-and-job-scripting)
+
+#### sbatch Example
+
+```
+sbatch <your-jobscript-name>
+```
+
+Example Batch Script: 
+
+```
+#!/bin/bash
+
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=00:10:00
+#SBATCH --partition=atesting
+#SBATCH --qos=testing
+#SBATCH --output=sample-%j.out
+
+module purge
+
+module load intel
+module load mkl
+
+echo "== This is the scripting step! =="
+sleep 30
+./executable.exe
+echo "== End of Job =="
+```
+
+
 ## Software Management
 
+TODO - add sentence explaining once you have a job you will need to setup your software environment to do work.  There are three primary methods for accessing software on Alpine or Blanca compute nodes:
 
-There are three primary methods for accessing software on Alpine and Blanca:
+1.  **Modules:** 
 
-1.  **LMOD Modules:** 
+    * Enables you to access software installed and configured by CURC (e.g., MATLAB).
+    * Advantage: You do not need to install the software yourself. The software is also configured to work optimally on the cluster. 
 
-    * The primary method. Dynamically modifies the shell environment to access specific compilers and applications (e.g., MATLAB).
-    * You may never need to install a program if the module exists.
-
-2.  **Anaconda Environments:**
+2.  **Package Managers ([Conda](https://curc.readthedocs.io/en/latest/software/python.html#using-the-curc-anaconda-environment), [Mamba](https://curc.readthedocs.io/en/latest/software/python.html#mamba-package-manager), [UV](https://curc.readthedocs.io/en/latest/software/uv.html)):**
 
     * Encouraged for Python or R users.
-    * Allows users to manage their own libraries and specific versions not available on the cluster.
+    * Advantage: Enables you to manage your own libraries and specific versions not available on the cluster.
 
-3.  **Containers (Apptainer):**
+3.  **Containers ([Apptainer](https://curc.readthedocs.io/en/latest/software/containerization.html)):**
 
     * Used for workflows requiring complex dependencies or specific operating systems.
-    * Ensures projects run consistently over time and across different systems.
+    * Advantage: Enables you to install software that otherwise could not run or be installed on CURC systems. For example, software that requires a different operating system (e.g. Ubuntu) and/or specific system configuration.
 
 <div style="width:45%; margin: 15px 2.5%; float:left;">
 
@@ -338,18 +607,18 @@ let check = 0
 
 //  pip
 if ("@input" == "0") {
-  response = "<b> pip install ... - Not Quite </b> <br> You can install Python packages using pip. Just make sure you have a Python module loaded or are working within an Anaconda environment. <br>"
+  response = "<b> pip install ... - Not Quite </b> <br> You can install Python packages using pip. Just make sure you have a Python module loaded or are working within an environment like conda, mamba, or uv. <br>"
 } 
 
 // sudo 
 if ("@input" == "1") {
-  response = "<b> sudo apt-get ... - Correct!</b> <br> To protect the stability and security of the system, CURC user accounts have restricted system access and are unable to use commands like 'sudo' which require superuser or root privileges.  <br>"
+  response = "<b> sudo apt-get ... - Correct!</b> <br> To protect the stability and security of the system, CURC user accounts have restricted system access and are unable to access the operating system's package managers (apt-get) or use commands like 'sudo' which require superuser or root privileges. <br>"
     check=1
 } 
 
 // conda
 if ("@input" == "2") {
-  response = "<b> conda install ... - Not Quite </b> <br> You can use Anaconda to create environments and install condo-supported packages and libraries. <br>"
+  response = "<b> conda install ... - Not Quite </b> <br> You can use Anaconda to create environments and install conda supported packages and libraries. <br>"
 } 
 
 // None
@@ -362,6 +631,8 @@ document.getElementById("software_question_responses").innerHTML = response
 //If all of the correct options have been selected, then send true so LIA will continue. Sending empty string (false) notifies lia that 
 // the submission isn't fully complete
 if(check == 1){
+  let currentDate = new Date();
+  sendData({username: user_name, email: user_email, course:"NEW_USER", question:"SOFTWARE", value: currentDate.toLocaleString()})
   send.lia("true")
 } else { send.lia("")}
 
@@ -376,69 +647,10 @@ if(check == 1){
 
 <div style="clear:both"></div>
 
-
 ---
 
-## Open OnDemand
+## Storing Data on the Cluster
 
-Open OnDemand is a browser-based web portal that serves as a single access point for CURC resources.
-
-
-**Key Features:**
-
-* **File Browser:** Upload, download, and edit files.
-* **Interactive Apps:** Launch Jupyter Notebooks, RStudio, VS Code, and MATLAB in the browser.
-* **Job Composer:** Create and submit Slurm jobs via forms.
-* **Shell Access:** Open a terminal window directly in your browser.
-
-<div style="width:45%; margin: 15px 2.5%; float:left;">
-
-![A cartoon graphic of a user interacting with the Open OnDemand web portal](lia_test/img/Open_OnDemand.png)<!-- style="border:solid black 1px; border-radius: 15px;" -->
-
-</div>
-
-<div style="width:40%; border: solid black 1px; padding:10px; border-radius: 15px; float:left; margin: 15px 2.5%;" >
-
-**1. Can you use Open OnDemand to upload/download your research dataset?**
-
-<!-- 
-data-solution-button="off" 
-data-text-solved="Correct! <br> Open OnDemand is only intended for light data operations - like working with text files. "
-data-text-failed="Not Quite! <br> While Open OnDemand provides a file browser, it is only intended for light data operations - like working with text files. If you need to upload or download a large dataset, you'll need to use one of our data transfer tools (like Globus). <br> <br> Learn More:  https://curc.readthedocs.io/en/latest/compute/data-transfer.html"
--->
-[( )] Yes
-[(X)] No
-
-**2. Can you use Open OnDemand to launch and run your full research workflow from RStudio?**
-
-<!-- 
-data-solution-button="off" 
-data-text-solved="Correct! <br> While you can use Open OnDemand to launch an interactive session with RStudio, this is really best for testing and developing a workflow. A finalized workflow should be submitted to the system as a batch job. <br> <br> Learn More: https://curc.readthedocs.io/en/latest/running-jobs/batch-jobs.html"
-data-text-failed="Not Quite! <br> This is somewhat of a trick question. Yes, you can use RStudio within Open OnDemand but it's really intended to help support DEVELOPING your workflow. Interactive apps (like RStudio and VS Code) are not ideal for running finalized workflows. <br> Once a research workflow has been well tested, it should be submitted to the system as a batch job. <br> <br> Learn More:  https://curc.readthedocs.io/en/latest/running-jobs/batch-jobs.html"
--->
-[( )] Yes
-[(X)] No
-
-**3. To open a terminal on CURC's clusters, you must setup a local application on your computer, like Putty or iTerm.**
-
-<!-- 
-data-solution-button="off" 
-data-text-solved="Correct! <br> Open OnDemand provides an interactive shell (Alpine Shell) which can be used instead of local terminal applications. This is a great way to access the system's Linux terminal without the hassle of setting up Putty or other terminal applications."
-data-text-failed="Not Quite! <br>Open OnDemand's Alpine Shell provides all RC users a web-based terminal for running Linux commands, editing files, other command-line operations. "
--->
-[( )] Yes
-[(X)] No
-
-</div>
-
-<div style="clear:both"></div>
-
----
-
-## Data Storage
-
-
-**Core Storage**
 All users receive space in three personal directories:
 
 | Directory | Size Limit | Purpose | Performance/Backup |
@@ -447,8 +659,17 @@ All users receive space in three personal directories:
 | **/projects** | 250 GB | Software builds and smaller datasets. | Backed up. |
 | **/scratch** | 10 TB | **All compute jobs** should be run here. | High-performance, **NOT backed up**. Temporary storage only. |
 
-**PetaLibrary**
+
+### PetaLibrary 
 Available for storage, archival, and sharing of research data. It incurs a yearly charge per TB.
+
+TODO Add more info on PL here
+
+### Data Transfers
+
+Discuss globus and other options here
+
+
 
 <div style="width:45%; margin: 15px 2.5%; float:left;">
 
@@ -499,6 +720,8 @@ document.getElementById("storage_question_responses").innerHTML = response
 //If all of the correct options have been selected, then send true so LIA will continue. Sending empty string (false) notifies lia that 
 // the submission isn't fully complete
 if(check == 1){
+  let currentDate = new Date();
+  sendData({username: user_name, email: user_email, course:"NEW_USER", question:"DATA_STORAGE", value: currentDate.toLocaleString()})
   send.lia("true")
 } else { send.lia("")}
 
@@ -516,7 +739,7 @@ if(check == 1){
 
 ---
 
-## User Policies
+## System Policies
 
 To maintain a healthy system, you must adhere to the following policies:
 
@@ -572,6 +795,8 @@ if (@input[3] == "1") {
 document.getElementById("user_policy_question_responses").innerHTML = response
 
 if(check == 2){
+  let currentDate = new Date();
+  sendData({username: user_name, email: user_email, course:"NEW_USER", question:"USER_POLICIES", value: currentDate.toLocaleString()})
   send.lia("true")
 } else { send.lia("")}
 
@@ -588,6 +813,12 @@ if(check == 2){
 
 ---
 
+### Asking for Help
+
+TODO: Add info here
+
+---
+
 ## Conclusion
 
 **Congratulations! You have completed the New CURC User Training!**
@@ -598,3 +829,53 @@ To learn more about Research Computing, consider:
 
 * Reading the [Online Documentation](https://curc.readthedocs.io/en/latest/).
 * Attending a [Workshop Training Session](https://curc.readthedocs.io/en/latest/getting_started/current-sem-trainings.html).
+
+--- 
+
+<script hidden>
+ let currentDate = new Date();
+  sendData({username: user_name, email: user_email, course:"NEW_USER", question:"CONCLUSION", value: currentDate.toLocaleString()})
+  "LIA: wait"
+</script>
+
+<div style="width:40%; border: solid black 1px; padding:10px; border-radius: 15px; margin: 0 auto;" >
+
+Please let us know how useful you found this survey: 
+
+  [(2)] Very useful
+  [(1)] Somewhat useful
+  [(0)] Neutral 
+  [(-1)] Not so useful
+  [(-2)] Not very useful
+<script>
+  let choices = @input;
+  for (const [key, value] of Object.entries(choices)) {
+    if(value === 1){
+      sendData({username: user_name, email: user_email, course:"NEW_USER", question:"REVIEW_SCORE", value: key })
+      send.lia("Feedback Sent", [], false)
+      break;
+    }
+  }
+
+</script>
+
+</div>
+
+<br>
+
+<div style="width:40%; border: solid black 1px; padding:10px; border-radius: 15px; margin: 0 auto;" >
+
+Please provide any comments you would like to share with us on this course: 
+
+[[___ ___ ___ ___]]
+<script>
+
+  sendData({username: user_name, email: user_email, course:"NEW_USER", question:"COMMENTS", value: `@input`})
+  send.lia("Feedback Sent", [], false)
+  "LIA: wait"
+</script>
+
+
+</div>
+
+<div style="clear:both"></div>
