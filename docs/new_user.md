@@ -41,7 +41,7 @@ window.sendData = async function sendData({url='https://script.google.com/macros
 }
 
 window.user_name="anon_" + Math.floor(Math.random() * 1000000);
-window.user_email=window.user_name
+window.user_email=window.user_name + "email.edu"
 
 @end
 
