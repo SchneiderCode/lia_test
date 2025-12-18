@@ -203,24 +203,24 @@ let check = 0
 
 //  Neutral Net
 if (@input[0] == "1") {
-  response += "<b>Training a deep learning... - Correct!</b> <br> Training a deep learning neural network requires a massive amount of simultaneous computations and a lots of memory capacity to handle the model and dataset, making it a classic HPC workflow. <br>"
+  response += "<b>Training a deep learning... - Correct!</b> <br> Training a deep learning neural network requires a massive amount of simultaneous computations and a lots of memory capacity to handle the model and dataset, making it a classic HPC workflow. <br> <br>"
   check+=1
 } 
 
 //Spreadsheet 
 if (@input[1]  == "1") {
-  response += "<b> Creating a spreadsheet... - Not Quite.</b>  <br> This task is a simple, sequential calculation that requires minimal resources and is easily handled by a standard personal computer. It does not benefit from or require the parallel power of a cluster. <br>"
+  response += "<b> Creating a spreadsheet... - Not Quite.</b>  <br> This task is a simple, sequential calculation that requires minimal resources and is easily handled by a standard personal computer. It does not benefit from or require the parallel power of a cluster. <br> <br>"
 } 
 
 // CFD Simulation
 if (@input[2] == "1") {
-  response += "<b> Running a computational fluid ... - Correct!</b> <br> Simulations often require coordinated, parallel computation across many CPU cores (and GPUs) in order to complete within a reasonable timeframe. <br>"
+  response += "<b> Running a computational fluid ... - Correct!</b> <br> Simulations often require coordinated, parallel computation across many CPU cores (and GPUs) in order to complete within a reasonable timeframe. <br> <br>"
   check+=1
 } 
 
 // Hosting a website
 if (@input[3] == "1") {
-  response += "<b> Hosting an interactive website... - Not Quite.</b> <br> While visualizing large datasets can be a great HPC workflow, CURC does not support web servers. Research workflows that require always-on services (like web servers) need to be setup in the cloud or on a non-CURC cluster.  <br>"
+  response += "<b> Hosting an interactive website... - Not Quite.</b> <br> While visualizing large datasets can be a great HPC workflow, CURC does not support web servers. Research workflows that require always-on services (like web servers) need to be setup in the cloud or on a non-CURC cluster.  <br> <br>"
 } 
 
 document.getElementById("hpc_question_responses").innerHTML = response
@@ -269,7 +269,7 @@ These are the powerful computers where your actual research and calculations tak
 * **Use it for:** Running simulations, analyzing data, and performing heavy calculations.  
 * **Types Available:**
 
-  * *CPU Nodes:* Primary node for most users. Includes at least 256 GB of RAM and dozens of CPU cores per node.
+  * *CPU Nodes:* Primary node for most users. Includes at least 256 GB of RAM[^1](Random Access Memory [RAM] serves as temporary storage for your active programs and data. Insufficient RAM allocation can lead to performance degradation or abrupt program termination via Out of Memory [OOM] errors. However, it is critical to estimate your usage accurately and request only the resources necessary to avoid waste.) and dozens of CPU cores[^2](The Central Processing Unit [CPU] acts as the 'brain' of the computer, executing calculations. While modern CPUs offer multiple cores to allow tasks to run simultaneously, [parallel processing], this only works if your software is designed to split the work. Crucial Note: Simply requesting more cores does not automatically make your job run faster. If your program is 'single-threaded,' it will use one core while the others sit idle.) per node.
   * *High-Memory Nodes:* Specialized CPU Node that provides a large amount of RAM (1TB or 2 TB).
   * *GPU Nodes:* Specialized nodes that contains one or more Graphical Processing Units (GPUs), which help support AI, Machine Learning, and GPU-accelerated software.
 
@@ -453,8 +453,8 @@ if ("@input" == "1") {
 
 <!-- 
 data-solution-button="off" 
-data-text-solved="Correct! <br> Open OnDemand is only intended for light data operations - like working with text files. You can learn more about how data transfers in our online documentation. <br> <br> Data Transfers: https://curc.readthedocs.io/en/latest/compute/data-transfer.html "
-data-text-failed="Not Quite! <br> While Open OnDemand provides a file browser, it is only intended for light data operations - like working with text files. If you need to upload or download a large dataset, you'll need to use one of our data transfer tools (like Globus). <br> <br> <br> Data Transfers:  https://curc.readthedocs.io/en/latest/compute/data-transfer.html"
+data-text-solved="Correct! <br> Open OnDemand is only intended for light data operations - like working with text files. You can learn more about how data transfers in our <a href='https://curc.readthedocs.io/en/latest/compute/data-transfer.html'>online documentation</a>. <br>"
+data-text-failed="Not Quite! <br> While Open OnDemand provides a file browser, it is only intended for light data operations - like working with text files. If you need to upload or download a large dataset, you'll need to use one of our data transfer tools (like Globus). You can learn more about how data transfers in our <a href='https://curc.readthedocs.io/en/latest/compute/data-transfer.html'>online documentation</a>.<br>"
 -->
 [( )] Yes
 [(X)] No
@@ -523,11 +523,48 @@ You can also request an interactive job through Open Ondemand, which supports a 
 
 #### sinteractive Examples 
 
-TODO - add more examples from the docs here.
+Below are examples of how you can use sinteractive to request specific compute resources on Alpine's different partitions. These are only intended as quick examples. To learn more about the different partitions and compute resources on Alpine and Blanca, check the online documentation linked below. 
+
+---
+
+Request 4 CPU cores (ntasks) for 30 minutes on acompile. acompile is a "partition" that provides quick access to compute nodes for compiling code and other small compute tasks.
 
 ```
-sinteractive --partition=amilan --time=00:10:00 --ntasks=1 --nodes=1 --qos=normal
+sinteractive --partition=acompile --ntasks=4 --nodes=1 --qos=compile --time=00:10:00
 ```
+
+---
+
+Request 8 cpu cores (ntask) for 2 hours on the amilan partition. amilan is the main partition for CPU nodes and where most of your jobs will be submitted.
+
+```
+sinteractive --partition=amilan --time=02:00:00 --ntasks=8 --nodes=1 --qos=normal
+```
+
+---
+
+Request 4 CPU cores spread evenly across 2 nodes for 10 minutes on the atesting partition. atesting is one of the testing partitions, which provides access to limited resources for the purpose of verifying workflows and MPI jobs.
+
+```
+sinteractive --partition=atesting --ntasks=2 --ntasks-per-node=1 --nodes=2 --qos=testing --time=00:10:00
+```
+
+---
+
+Request 1 A100 GPU (MIG Slice) with 10 CPU cores for 30 minutes on the atesting_a100 partition. atesting_a100 is one of the GPU testing partitions which provide access to limited GPU resources for the purpose of verifying GPU workflows and building GPU-accelerated applications.
+
+```
+sinteractive --partition=atesting_a100 --gres=gpu:1 --ntasks=10 --nodes=1 --qos=testing --time=00:30:00 
+```
+
+
+<div style="display: flex; align-items:center; padding:1em; border-top: dashed 1px; border-bottom: dashed 1px; " >
+
+<img alt="Read the Docs Logo" src="lia_test/img/RTD_Logo_Dark.svg" style="width:150px; margin-right:15px; background-color:white; border-radius:5px; padding:5px;"> 
+
+<p style="margin-bottom:0;" >Learn more about [Alpine's partitions](https://curc.readthedocs.io/en/latest/clusters/alpine/alpine-hardware.html#partitions) and check examples for requesting [Blanca resources](https://curc.readthedocs.io/en/latest/clusters/blanca/blanca.html#examples) in our online documentation. </p>
+
+</div>
 
 ### Batch Jobs
 
@@ -594,8 +631,8 @@ echo "== End of Job =="
 
 <!-- 
 data-solution-button="off" 
-data-text-solved="Correct! <br> While you can use Open OnDemand to launch an interactive session (e.g. VS Code, RStudio, Matlab), this is really best for testing and developing a workflow. A finalized workflow should be submitted to the system as a batch job. <br> <br> Batch Jobs: https://curc.readthedocs.io/en/latest/running-jobs/batch-jobs.html"
-data-text-failed="Not Quite! <br> This is somewhat of a trick question. While you can use Open OnDemand for most research tasks, it's really intended to help support DEVELOPING your workflow. Interactive apps (like RStudio and VS Code) are not ideal for running finalized workflows. <br> Once a research workflow has been well tested, it should be submitted to the system as a batch job (which is discussed in the next section). <br> <br> Batch Jobs:  https://curc.readthedocs.io/en/latest/running-jobs/batch-jobs.html"
+data-text-solved="Correct! <br> While you can use Open OnDemand to launch an interactive session (e.g. VS Code, RStudio, Matlab), this is really best for testing and developing a workflow. In most cases, a finalized workflow should be submitted to the system as a batch job. <br> <br> You can learn more about batch jobs in our <a href='https://curc.readthedocs.io/en/latest/running-jobs/batch-jobs.html'> online documentation</a> and in the next section. <br>"
+data-text-failed="Not Quite! <br> This is somewhat of a trick question. While you can use Open OnDemand for most research tasks, it's really intended to help support DEVELOPING your workflow. Interactive apps (like RStudio and VS Code) are not ideal for running finalized workflows. <br> <br> For most research workflows, once they have been well tested, they should be submitted to the system as a batch job. <br> <br> You can learn more about batch jobs in our <a href='https://curc.readthedocs.io/en/latest/running-jobs/batch-jobs.html'> online documentation</a> and in the next section."
 -->
 [( )] True
 [(X)] False
@@ -781,8 +818,6 @@ Data transfers using SSH protocols can be done through the CURC data transfer no
 
 ![A cartoon graphic representing the core storage](lia_test/img/Core_Storage.png)<!-- style="border:solid black 1px; border-radius: 15px;" -->
 
-![A cartoon graphic representing PetaLibrary](lia_test/img/PetaLibrary.png)<!-- style="border:solid black 1px; border-radius: 15px;" -->
-
 </div>
 
 <div style="width:40%; border: solid black 1px; padding:10px; border-radius: 15px; float:left; margin: 15px 2.5%;" >
@@ -850,9 +885,10 @@ if(check == 1){
 To maintain a healthy system, you must adhere to the following policies:
 
 1.  **Login Nodes:** Do **NOT** run computational jobs on login nodes. Use interactive or batch jobs to run work on compute nodes.
-2.  **Acknowledgment:** You must acknowledge CURC in publications.
+2.  **Acknowledgment:** Use of CURC resources must be acknowledged in any and all publications. You can find more details on citing CURC resources on our [Acknowledging CURC Resources webpage](https://curc.readthedocs.io/en/latest/getting_started/acknowledge_curc_resources.html).
 3.  **Acceptable Use:** Resources may not be used for personal financial gain or commercial purposes.
-4.  **Acceptable Data:** Do not store US Government Classified data or Controlled Unclassified Information (CUI).
+4.  **Acceptable Data:** Do not store US government Classified, nor any Controlled Unclassified Information including, but not limited to, data subject to the US federal Health Insurance Portability and Accountability Act (HIPAA), the US federal Family Educational Rights and Privacy Act (FERPA), or the International Traffic in Arms Regulations (ITAR). For sensitive data storage, check the [Secure Research Computing Resources webpage](https://www.colorado.edu/rc/secure-research-computing-resources).
+5.  **Planned Maintenance:** The first Wednesday of each month is reserved for Planned Maintenance (PM). CURC resources will be unavailable during this time. Check https://curc.statuspage.io/ for updates on PMs.
 
 <div style="display: flex; align-items:center; padding:1em; border-top: dashed 1px; border-bottom: dashed 1px; " >
 
@@ -878,7 +914,7 @@ Which of the following actions violate CURC User Policies?
 <!-- data-solution-button="off" -->
 [[ ]] Editing your project's code in Open OnDemand's File Browser
 [[X]] Storing medical records for patients in study on Alzheimer treatments 
-[[X]] Running a simple python program from a Login Node 
+[[X]] Running a simple Python program from a login node 
 [[ ]] Submitting hundreds of compute jobs to the Alpine Cluster
 <script>
 //Expected format for @input is a numeric array
@@ -888,7 +924,7 @@ let check = 0
 
 //  Editing your project
 if (@input[0] == "1") {
-  response += "<b>Editying your project's... - Not Quite.</b> <br> Simple editing of text files and code from the File Browser or the Alpine Shell is perfectly fine. The main concern is that you aren't downloading large files (Open OnDemand) or doing compute heavy operations (uncompressing files, running scripts, etc.) from a login node. <br> <br>"
+  response += "<b>Editying your project's... - Not Quite.</b> <br> Simple editing of text files and code from the File Browser or the Alpine Shell is perfectly fine. However, downloading large files using Open OnDemand or performing compute heavy operations (uncompressing files, running scripts, etc.) from a login node is not acceptable. <br> <br>"
 } 
 
 //Medical records 
@@ -899,13 +935,13 @@ if (@input[1]  == "1") {
 
 // Login Node
 if (@input[2] == "1") {
-  response += "<b> Running a simple python program... - Correct!</b> <br> While simple programs may seem small - they still use compute resources. Since the login nodes are a shared resource, they really can't support even simple python scripts. <br> Instead of using the login nodes, jump onto a compute node like acompile which has lots of available resources. This is good for the system and for you - CURC does suspend accounts that run programs on the login nodes. <br> <br>"
+  response += "<b> Running a simple Python program... - Correct!</b> <br> While simple programs may seem small - they still use compute resources. Since the login nodes are a shared resource, they really can't support even simple Python scripts. <br> Instead of using the login nodes, jump onto a compute node which has lots of available compute resources. This is good for the system and for you - CURC does suspend accounts that run programs on the login nodes. <br> <br>"
   check+=1
 } 
 
 // Hundreds of Jobs
 if (@input[3] == "1") {
-  response += "<b> Submitting hundreds of compute jobs ... - Not Quite.</b> <br> The Alpine Cluster is designed for handling jobs at scale. Many users submit hundreds of jobs a day, but there are some limitations on how many jobs you can submit and/or run at the same time. <br> You can find limitations on job submission in our documentation here: https://curc.readthedocs.io/en/latest/clusters/alpine/alpine-hardware.html#quality-of-service-qos  <br> <br>"
+  response += "<b> Submitting hundreds of compute jobs ... - Not Quite.</b> <br> The Alpine Cluster is designed for handling jobs at scale. Many users submit hundreds of jobs a day, but there are some limitations on how many jobs you can submit and/or run at the same time. <br> You can find limitations on job submission in our <a href='https://curc.readthedocs.io/en/latest/clusters/alpine/alpine-hardware.html#quality-of-service-qos'> online documentation</a> <br> <br>"
 } 
 
 document.getElementById("user_policy_question_responses").innerHTML = response
@@ -934,11 +970,11 @@ if(check == 2){
 
 **Congratulations! You have completed the New CURC User Training!**
 
-If you have specific questions about CURC resources, please fill out our [Online Help Form](https://colorado.service-now.com/req_portal?id=ucb_sc_rc_form).
+If you have specific questions about CURC resources, please fill out our [support request form](https://colorado.service-now.com/req_portal?id=ucb_sc_rc_form).
 
 To learn more about Research Computing, consider:
 
-* Reading the [Online Documentation](https://curc.readthedocs.io/en/latest/).
+* Reading the [Online Documentation](https://curc.readthedocs.io/en/latest/getting_started/navigating_docs.html).
 * Attending a [Workshop Training Session](https://curc.readthedocs.io/en/latest/getting_started/current-sem-trainings.html).
 
 --- 
@@ -951,7 +987,7 @@ To learn more about Research Computing, consider:
 
 <div style="width:40%; border: solid black 1px; padding:10px; border-radius: 15px; margin: 0 auto;" >
 
-Please let us know how useful you found this survey: 
+Please let us know how useful you found this online training: 
 
   [(2)] Very useful
   [(1)] Somewhat useful
