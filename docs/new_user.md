@@ -178,6 +178,8 @@ CURC currently supports two clusters -- Alpine and Blanca.
 
 </div>
 
+#### ✏ Knowledge Check
+
 <div style="width:45%; margin: 15px 2.5%; float:left; ">
 
 ![A cartoon graphic of an HPC Cluster's hardware](lia_test/img/HPC_Clusters.png)<!-- style="border:solid black 1px; border-radius: 15px;" -->
@@ -273,6 +275,8 @@ These are the powerful computers where your actual research and calculations tak
 
 * **How to access:** You generally do not log into these directly. Instead, you submit a "job" (using Slurm) from the login node, and the system assigns your work to a compute node automatically. You'll learn more in an upcoming section "Running Jobs on the Cluster". 
 
+#### ✏ Knowledge Check
+
 <div style="width:45%; margin: 15px 2.5%; float:left;">
 
 ![A cartoon graphic of an HPC Cluster's hardware](lia_test/img/Alpine.png)<!-- style="border:solid black 1px; border-radius: 15px;" -->
@@ -357,12 +361,12 @@ To access CURC's HPC resources, like Alpine and Blanca, you will need to follow 
 
 1. Request a Research Computing account
 
-2. Log onto the system 
+2. Log into the system (ssh or Open OnDemand's Web Portal) 
 
 3. Submit a job or transfer data
 
 
-![A cartoon graphic showing how to access CURC systems](lia_test/img/System_Access.png)<!-- style="border:solid black 1px; border-radius: 15px; width:75%; margin: 0 auto;" -->
+![A cartoon graphic showing how to access CURC systems](lia_test/img/System_Access.png)<!-- style="border:solid black 1px; border-radius: 15px; width:75%; margin: 0 auto; display:block;" -->
 
 ### Requesting an RC Account 
 
@@ -390,6 +394,8 @@ Similar to obtaining an account, the process of logging in to CURC resources can
 <p style="margin-bottom:0;" >Learn more about [logging in](https://curc.readthedocs.io/en/latest/getting_started/logging-in.html#getting-access-to-curc-resources) in our online documentation. </p>
 
 </div>
+
+#### ✏ Knowledge Check
 
 <div style="width:45%; margin: 15px 2.5%; float:left;">
 
@@ -442,6 +448,8 @@ Open OnDemand is a browser-based web portal that serves as a single access point
 <p style="margin-bottom:0;" >Learn more about [Open OnDemand](https://curc.readthedocs.io/en/latest/open_ondemand/index.html) in our online documentation. </p>
 
 </div>
+
+#### ✏ Knowledge Check
 
 <div style="width:45%; margin: 15px 2.5%; float:left;">
 
@@ -503,9 +511,11 @@ Because CURC's compute nodes are shared among many researchers, Research Computi
 
 In order to run a program on a cluster, you must request resources from Slurm to generate a job. Resources can be requested from a login node or a compile node. You must then provide commands to run your program on those requested resources. Where you provide your commands depends on whether you are running a batch job or an interactive job.
 
-When you run a batch job or an interactive job, it will be placed in a queue until resources are available.
+If you are new to CURC's systems we encourage you to start with an interactive job, where you can develop and test your computational workflow. Once you are ready to scale-up your workflow, you can convert your workflow into a batch job that is managed by SLURM. More details on interactive and batch jobs follow in the next sections. 
 
-TODO - add diagram representing interactive vs batch. Highlight that open on demand is considered an interactive job. 
+> **Note:** Whether you run a batch job or an interactive job, it will be placed in a queue until resources are available. As a good rule of thumb, the more resources and job time you request the longer your job will wait in the queue. So, make sure your jobs only request what they need.
+
+![A cartoon graphic showing the types of interactive and batch jobs supported on the cluster](lia_test/img/Interactive_VS_Batch_Jobs.png)<!-- style="border:solid black 1px; border-radius: 15px; width:75%; margin: 0 auto; display:block;" -->
 
 ### Interactive Jobs
 
@@ -515,9 +525,33 @@ As the name would imply, an interactive job is a job that allows users to intera
 * Any application that requires user input at runtime
 * Any application with a GUI (Graphical User Interface)
 
-You can request an interactive job by using the sinteractive command. Compute resources must be requested via the command line through the use of SLURM flags. An example of an sinteractive command can be found below. Additional details on modifying SLURM flags and requesting an interactive session can be found in our [online documentation](https://curc.readthedocs.io/en/latest/running-jobs/interactive-jobs.html). 
+---
 
-Example sinteractive command: 
+**`sinteractive`** <br>
+You can request an interactive job by using the sinteractive command. Compute resources must be requested via the command line through the use of SLURM flags (more details provided in our online documentation linked below). Examples of sinteractive commands can be found in the next section. 
+
+---
+
+**`Open OnDemand`** <br>
+You can also request an interactive job through Open Ondemand, which supports a variety of Integrated Development Environments (IDE) and GUI applications. The following applications are currently supported in Open OnDemand: 
+
+* **Core Desktop** - A Linux Desktop environment to support GUI applications 
+* **VS Code Server**
+* **Jupyter Lab / Jupyter Notebook** 
+* **MATLAB**
+* **RStudio**
+
+<div style="display: flex; align-items:center; padding:1em; border-top: dashed 1px; border-bottom: dashed 1px; " >
+
+<img alt="Read the Docs Logo" src="lia_test/img/RTD_Logo_Dark.svg" style="width:150px; margin-right:15px; background-color:white; border-radius:5px; padding:5px;"> 
+
+<p style="margin-bottom:0;" >Learn more about [interactive jobs](https://curc.readthedocs.io/en/latest/running-jobs/interactive-jobs.html) and [Open OnDemand's interactive applications](https://curc.readthedocs.io/en/latest/open_ondemand/index.html) in our online documentation. </p>
+
+</div>
+
+#### sinteractive Examples 
+
+TODO - add more examples from the docs here.
 
 ```
 sinteractive --partition=amilan --time=00:10:00 --ntasks=1 --nodes=1 --qos=normal
@@ -533,7 +567,15 @@ The primary method of running applications on Research Computing resources is th
 
 Unlike running an application on your personal machine, you do not call the application you wish to run directly. Instead, you create a job script that includes a call to your application. Job scripts are simply a set of resource requests and commands. When a job script is run, all the commands in the job script are executed on a compute node.
 
-Once created, you can run your job script by passing it to the Slurm queue with the sbatch command followed by your job script name. You can learn more about batch scripts in our [online documentation](https://curc.readthedocs.io/en/latest/running-jobs/batch-jobs.html#batch-jobs-and-job-scripting)
+Once created, you can run your job script by passing it to the Slurm queue with the sbatch command followed by your job script name. An example of a batch script can be found in the next section.
+
+<div style="display: flex; align-items:center; padding:1em; border-top: dashed 1px; border-bottom: dashed 1px; " >
+
+<img alt="Read the Docs Logo" src="lia_test/img/RTD_Logo_Dark.svg" style="width:150px; margin-right:15px; background-color:white; border-radius:5px; padding:5px;"> 
+
+<p style="margin-bottom:0;" >Learn more about [batch jobs](https://curc.readthedocs.io/en/latest/running-jobs/batch-jobs.html#batch-jobs-and-job-scripting)in our online documentation. </p>
+
+</div>
 
 #### sbatch Example
 
@@ -567,9 +609,9 @@ echo "== End of Job =="
 
 ## Software Management
 
-TODO - add sentence explaining once you have a job you will need to setup your software environment to do work.  There are three primary methods for accessing software on Alpine or Blanca compute nodes:
+In order for your computational workflows to actually "compute", you will need to select or prepare a software environment for them to run in. There are three primary methods for accessing software on Alpine or Blanca compute nodes:
 
-1.  **Modules:** 
+1.  **Modules ([CURC-Provided Software](https://curc.readthedocs.io/en/latest/software/curc_provided_software.html)):** 
 
     * Enables you to access software installed and configured by CURC (e.g., MATLAB).
     * Advantage: You do not need to install the software yourself. The software is also configured to work optimally on the cluster. 
@@ -583,6 +625,8 @@ TODO - add sentence explaining once you have a job you will need to setup your s
 
     * Used for workflows requiring complex dependencies or specific operating systems.
     * Advantage: Enables you to install software that otherwise could not run or be installed on CURC systems. For example, software that requires a different operating system (e.g. Ubuntu) and/or specific system configuration.
+
+### ✏ Knowledge Check
 
 <div style="width:45%; margin: 15px 2.5%; float:left;">
 
@@ -650,26 +694,78 @@ if(check == 1){
 ---
 
 ## Storing Data on the Cluster
+CURC provides two options for storing your data on the system - Core Storage and PetaLibrary.
 
-All users receive space in three personal directories:
+![A cartoon graphic showing how to access CURC systems](lia_test/img/Data_Storage.png)<!-- style="border:solid black 1px; border-radius: 15px; width:75%; margin: 0 auto; display:block;" -->
 
-| Directory | Size Limit | Purpose | Performance/Backup |
-| :--- | :--- | :--- | :--- |
-| **/home** | 2 GB | Source code, small compiled programs, job scripts. | Backed up. |
-| **/projects** | 250 GB | Software builds and smaller datasets. | Backed up. |
-| **/scratch** | 10 TB | **All compute jobs** should be run here. | High-performance, **NOT backed up**. Temporary storage only. |
+### Core Storage
+
+All users are provisioned space in three personal directories (that are accessible from both Alpine and Blanca):
+
+* **/home**
+ Size: 2 GB
+ Purpose: Saving small configuration files and personal files (e.g. ssh keys)
+ Snapshots: Yes, data is saved/backed-up at regular intervals 
+
+* **/projects** 
+ Size: 250 GB 
+ Purpose: Source code, jobs scripts, larger files, software libraries, and compiled programs
+ Snapshots: Yes, data is saved/backed-up at regular intervals
+
+* **/scratch** 
+ Size: 10 TB 
+ Purpose: Designed as performant I/O storage and where your data for compute jobs (both input and output) should be stored.
+ Snapshots: **NONE**. Scratch is temporary storage. All files are deleted after 90 days and we cannot restore files once they are deleted. 
+
+> If you need more storage space than what is provided by Core Storage, than you will want to consider purchasing a PetaLibrary allocation.
+
+<div style="display: flex; align-items:center; padding:1em; border-top: dashed 1px; border-bottom: dashed 1px; " >
+
+<img alt="Read the Docs Logo" src="lia_test/img/RTD_Logo_Dark.svg" style="width:150px; margin-right:15px; background-color:white; border-radius:5px; padding:5px;"> 
+
+<p style="margin-bottom:0;" >Learn more about [Core Storage](https://curc.readthedocs.io/en/latest/compute/filesystems.html) (including how to manage file permissions and sharing data) in our online documentation. </p>
+
+</div>
+
 
 
 ### PetaLibrary 
-Available for storage, archival, and sharing of research data. It incurs a yearly charge per TB.
 
-TODO Add more info on PL here
+The PetaLibrary is a University of Colorado Boulder Research Computing service that supports the storage, archival, and sharing of research data. It is available to any researcher affiliated with the University of Colorado System (Boulder, Anschutz, Denver, Colorado Springs) at an internal cost rate. It is available at an external cost rate to researchers from other RMACC institutions. 
+
+**Key Features:** 
+
+* Storage space is purchased in 1 TB units per year 
+* Different tiers are available that support data processing, long term archiving, and off-site backups. 
+* Data can be shared with other institutions and researchers around the world
+* Snapshots of the allocation are saved at regular intervals 
+
+<div style="display: flex; align-items:center; padding:1em; border-top: dashed 1px; border-bottom: dashed 1px; " >
+
+<img alt="Read the Docs Logo" src="lia_test/img/RTD_Logo_Dark.svg" style="width:150px; margin-right:15px; background-color:white; border-radius:5px; padding:5px;"> 
+
+<p style="margin-bottom:0;" >You can learn more about Petalibrary's [different tiers and options](https://curc.readthedocs.io/en/latest/petalibrary/allocation_types.html) in our online documentation. You can find the [current rates](https://www.colorado.edu/rc/resources/petalibrary/storageandrates) for Petalibrary allocations on our main website.</p>
+
+</div>
+
 
 ### Data Transfers
 
-Discuss globus and other options here
+Research Computing supports several methods of file transfer. File transfers from a local system can be done through a web-based application called Globus or through command-line tools such as secure copy (scp), secure ftp (sftp) and rsync.
 
+Data transfers using SSH protocols can be done through the CURC data transfer nodes (DTN). Transfers via the DTNs support all types of transfers, including large and/or frequent file transfers and automated (passwordless) transfers. 
 
+> We generally recommend you use Globus for handling large file transfers to the system. But if you aren't sure how to handle a tricky data transfer, feel free to reach out to User Support through our [support request form](https://colorado.service-now.com/req_portal?id=ucb_sc_rc_form). We are always happy to help!s
+
+<div style="display: flex; align-items:center; padding:1em; border-top: dashed 1px; border-bottom: dashed 1px; " >
+
+<img alt="Read the Docs Logo" src="lia_test/img/RTD_Logo_Dark.svg" style="width:150px; margin-right:15px; background-color:white; border-radius:5px; padding:5px;"> 
+
+<p style="margin-bottom:0;" >You can learn more about [data transfers](https://curc.readthedocs.io/en/latest/compute/data-transfer.html) and the various protocols we support in our online documentation. </p>
+
+</div>
+
+### ✏ Knowledge Check
 
 <div style="width:45%; margin: 15px 2.5%; float:left;">
 
@@ -743,15 +839,27 @@ if(check == 1){
 
 To maintain a healthy system, you must adhere to the following policies:
 
-1.  **Login Nodes:** Do **NOT** run computational jobs on login nodes. Use `srun` or `sbatch` to run work on compute nodes.
+1.  **Login Nodes:** Do **NOT** run computational jobs on login nodes. Use interactive or batch jobs to run work on compute nodes.
 2.  **Acknowledgment:** You must acknowledge CURC in publications.
 3.  **Acceptable Use:** Resources may not be used for personal financial gain or commercial purposes.
 4.  **Acceptable Data:** Do not store US Government Classified data or Controlled Unclassified Information (CUI).
 
+https://curc.readthedocs.io/en/latest/additional-resources/policies.html
+
+<div style="display: flex; align-items:center; padding:1em; border-top: dashed 1px; border-bottom: dashed 1px; " >
+
+<img alt="Read the Docs Logo" src="lia_test/img/RTD_Logo_Dark.svg" style="width:150px; margin-right:15px; background-color:white; border-radius:5px; padding:5px;"> 
+
+<p style="margin-bottom:0;" >Learn more about [Alpine](https://curc.readthedocs.io/en/latest/clusters/alpine/index.html) and [Blanca](https://www.colorado.edu/rc/resources/blanca) in our online documentation. </p>
+
+</div>
+
+
+### ✏ Knowledge Check
+
 <div style="width:45%; margin: 15px 2.5%; float:left;">
 
 ![A cartoon graphic representing the User Policies](lia_test/img/User_Policies.png)<!-- style="border:solid black 1px; border-radius: 15px;" -->
-
 
 </div>
 
@@ -811,11 +919,6 @@ if(check == 2){
 
 <div style="clear:both"></div>
 
----
-
-### Asking for Help
-
-TODO: Add info here
 
 ---
 
