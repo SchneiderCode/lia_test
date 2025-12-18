@@ -156,7 +156,7 @@ An HPC cluster connects individual computers (called "nodes") via a high-speed n
 * **Working at Scale:** Also known as "High-Throughput Computing," this approach assigns each node a separate, smaller puzzle to solve independently. While the speed of a single task remains the same, the cluster processes a massive volume of distinct jobs at once.
 
 
-![A cartoon graphic of an HPC Cluster's hardware](lia_test/img/HPC_Workflows.png)<!-- style="border:solid black 1px; border-radius: 15px; display:block; margin:15px auto;" -->
+![A cartoon graphic of an HPC Cluster's hardware](lia_test/img/HPC_Workflows.png)<!-- style="border:solid black 1px; border-radius: 15px; display:block; margin:15px auto; width:75%" -->
 
 
 
@@ -362,7 +362,7 @@ To access CURC's HPC resources, like Alpine and Blanca, you will need to follow 
 3. Submit a job or transfer data
 
 
-![A cartoon graphic showing how to access CURC systems](lia_test/img/System_Access.png)<!-- style="border:solid black 1px; border-radius: 15px;" -->
+![A cartoon graphic showing how to access CURC systems](lia_test/img/System_Access.png)<!-- style="border:solid black 1px; border-radius: 15px; width:75%; margin: 0 auto;" -->
 
 ### Requesting an RC Account 
 
